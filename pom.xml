@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <!-- ================================================================
+         ROOT PARENT / AGGREGATOR
+         - Inherits from spring-boot-starter-parent for BOM management
+         - Declares all 10 modules
+         - packaging = pom (aggregator, not built itself)
+    ================================================================ -->
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.3.4</version>
+        <relativePath/>
+    </parent>
+
+    <groupId>com.nexusenroll</groupId>
+    <artifactId>nexus-backend</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>nexus-backend</name>
+    <description>NexusEnroll Backend — Spring Boot Multi-Module Microservices</description>
+
+    <!-- ================================================================
+         MODULES (build order respects dependencies)
+    ================================================================ -->
+    <modules>
+        <module>common</module>
+        <module>auth-service</module>
+        <module>student-service</module>
+        <module>course-service</module>
+        <module>enrollment-service</module>
+        <module>faculty-service</module>
+        <module>academic-record-service</module>
+        <module>notification-service</module>
+        <module>reporting-service</module>
+        <module>api-gateway</module>
+    </modules>
+
+    <!-- ================================================================
+         GLOBAL PROPERTIES
+    ================================================================ -->
+    <properties>
+        <java.version>21</java.version>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <!-- Dependency versions managed here -->
+        <jjwt.version>0.12.6</jjwt.version>
+        <springdoc.version>2.8.9</springdoc.version>
+        <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <nexusenroll.version>1.0.0-SNAPSHOT</nexusenroll.version>
+    </properties>
+
+    <!-- ================================================================
+         DEPENDENCY MANAGEMENT
+         All versions declared here; child POMs inherit without version tags
+    ================================================================ -->
+    <dependencyManagement>
+        <dependencies>
+            <!-- Internal modules — version kept in sync via property -->
+            <dependency>
+                <groupId>com.nexusenroll</groupId>
+                <artifactId>common</artifactId>
+                <version>${nexusenroll.version}</version>
+            </dependency>
+
+            <!-- JWT -->
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <!-- Springdoc OpenAPI -->
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc.version}</version>
+            </dependency>
+            <!-- Spring Cloud BOM -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${spring-cloud.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- ================================================================
+         SHARED DEPENDENCIES (inherited by all child modules)
+    ================================================================ -->
+    <dependencies>
+        <!-- Lombok — available to every module -->
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <!-- Testing — available to every module -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+    <!-- ================================================================
+         BUILD PLUGIN MANAGEMENT
+    ================================================================ -->
+    <build>
+        <pluginManagement>
+            <plugins>
+                <!-- Maven compiler with Lombok annotation processor -->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+
+                <!-- Spring Boot plugin — only executable in service modules -->
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+</project>

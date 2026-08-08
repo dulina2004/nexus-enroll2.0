@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:nexus_auth;DB_CLOSE_DELAY=-1;MODE=MySQL;NON_KEYWORDS=STATUS,ROLE,KEYWORD,USER
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: false
+  sql:
+    init:
+      mode: never
+
+jwt:
+  secret: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2
+  expiration-ms: 28800000

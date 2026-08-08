@@ -1,0 +1,109 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  autoconfigure:
+    exclude:
+      - org.springframework.cloud.client.discovery.simple.SimpleDiscoveryClientAutoConfiguration
+
+  cloud:
+    discovery:
+      enabled: false
+      reactive:
+        enabled: false
+    gateway:
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins:
+              - "http://localhost:3000"
+              - "http://localhost:5173"
+              - "http://127.0.0.1:3000"
+              - "http://127.0.0.1:5173"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+              - PATCH
+            allowedHeaders: "*"
+            allowCredentials: true
+      routes:
+        - id: auth-service
+          uri: ${AUTH_SERVICE_URL:http://localhost:8001}
+          predicates:
+            - Path=/api/auth/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: student-service
+          uri: ${STUDENT_SERVICE_URL:http://localhost:8002}
+          predicates:
+            - Path=/api/students/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: course-service
+          uri: ${COURSE_SERVICE_URL:http://localhost:8003}
+          predicates:
+            - Path=/api/courses/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: enrollment-service
+          uri: ${ENROLLMENT_SERVICE_URL:http://localhost:8004}
+          predicates:
+            - Path=/api/enrollments/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: faculty-service
+          uri: ${FACULTY_SERVICE_URL:http://localhost:8005}
+          predicates:
+            - Path=/api/faculty/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: academic-record-service
+          uri: ${ACADEMIC_RECORD_SERVICE_URL:http://localhost:8006}
+          predicates:
+            - Path=/api/records/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: notification-service
+          uri: ${NOTIFICATION_SERVICE_URL:http://localhost:8007}
+          predicates:
+            - Path=/api/notifications/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+        - id: reporting-service
+          uri: ${REPORTING_SERVICE_URL:http://localhost:8008}
+          predicates:
+            - Path=/api/reports/**
+          filters:
+            - RewritePath=/api/(?<segment>.*), /${segment}
+
+jwt:
+  secret: ${JWT_SECRET:nexusenroll-dev-secret-change-in-production-min-32-chars}
+  expiration-ms: 28800000
+  issuer: nexusenroll
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,routes
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    com.nexusenroll: DEBUG
+    org.springframework.cloud.gateway: INFO

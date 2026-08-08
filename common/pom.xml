@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.nexusenroll</groupId>
+        <artifactId>nexus-backend</artifactId>
+        <version>1.0.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>common</artifactId>
+    <packaging>jar</packaging>
+    <name>common</name>
+    <description>NexusEnroll Common — Shared exceptions, DTOs, and utilities (no business logic, no JPA entities)</description>
+
+    <!--
+        MIGRATION DECISIONS — what is/isn't in common:
+
+        REMOVED from old common:
+          - DatabaseConfig / DatabaseConnection / JdbcUtil  → replaced by Spring Data JPA + HikariCP (per-service application.yaml)
+          - JsonUtil / org.json dependency                  → replaced by Jackson (built into spring-boot-starter-web)
+          - database.properties                             → replaced by per-service application.yaml
+          - schemas/*.sql / sample-*.sql                   → moved to auth-service Flyway resources (Phase 3)
+
+        KEPT + UPGRADED:
+          - ServiceException    → checked Exception → RuntimeException (Spring convention)
+          - ValidationException → unchanged logic, now unchecked
+          - ResourceNotFoundException → errorCode aligned to NOT_FOUND
+          - AuthenticationException   → errorCode aligned to UNAUTHORIZED
+          - GlobalExceptionHandler    → new; replaces per-controller error serialization
+          - ApiResponse<T>      → moved from http → dto pkg; errors: Map → List<String>
+          - BaseDTO             → Long epoch timestamps → java.time.Instant
+          - StringUtil          → email regex upgraded; pre-compiled Pattern; isBlank()
+
+        RULE: Do NOT add JPA entities, repositories, or business logic here.
+    -->
+
+    <dependencies>
+        <!-- Web layer: @ResponseStatus, ResponseEntity, @RestControllerAdvice, Jackson -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!-- Bean Validation: @Valid, @NotBlank, ConstraintViolationException -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
+
+        <!--
+            Spring Security: needed for AccessDeniedException handler in GlobalExceptionHandler.
+            Declared as 'provided' scope since every consuming service already
+            pulls spring-boot-starter-security into the runtime classpath.
+            common itself is a library and must NOT auto-configure a security filter chain.
+        -->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-core</artifactId>
+            <scope>provided</scope>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- common is a plain JAR library — NOT a Spring Boot executable fat jar -->
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
