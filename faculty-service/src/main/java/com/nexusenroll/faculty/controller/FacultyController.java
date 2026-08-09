@@ -26,7 +26,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/faculty")
+@RequestMapping("/api/faculty")
 @RequiredArgsConstructor
 public class FacultyController {
 

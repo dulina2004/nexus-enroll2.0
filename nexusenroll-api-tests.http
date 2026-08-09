@@ -1,0 +1,685 @@
+### ============================================================
+### NexusEnroll API Test Suite
+### Using VS Code REST Client or IntelliJ HTTP Client
+###
+### IMPORTANT: All requests go through the API Gateway on :8080
+### Run requests in ORDER - TOKEN is captured from login response
+### ============================================================
+
+### ========= VARIABLES =========
+@baseUrl = http://localhost:8080
+@contentType = application/json
+
+### ==========================================
+### STEP 1: REGISTER A STUDENT
+### ==========================================
+
+# @name registerStudent
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "john_doe",
+  "email": "john.doe@nexus.edu",
+  "password": "Password123!",
+  "firstName": "John",
+  "lastName": "Doe",
+  "role": "STUDENT"
+}
+
+###
+
+# @name registerFaculty
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "prof_smith",
+  "email": "prof.smith@nexus.edu",
+  "password": "Password123!",
+  "firstName": "Alice",
+  "lastName": "Smith",
+  "role": "FACULTY"
+}
+
+###
+
+# @name registerAdmin
+POST {{baseUrl}}/api/auth/register
+Content-Type: {{contentType}}
+
+{
+  "username": "admin_user",
+  "email": "admin@nexus.edu",
+  "password": "Password123!",
+  "firstName": "Admin",
+  "lastName": "User",
+  "role": "ADMIN"
+}
+
+### ==========================================
+### AUTH SERVICE
+### ==========================================
+
+# @name login
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "identifier": "john_doe",
+  "password": "Password123!"
+}
+
+### Capture token from response:
+### Set @token = <paste token from login response>
+@token = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huX2RvZSIsInVzZXJJZCI6NiwiZW1haWwiOiJqb2huLmRvZUBuZXh1cy5lZHUiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc4NjI2OTk1MSwiZXhwIjoxNzg2Mjk4NzUxfQ.pRZiYEXXDqLZ18pplYi9CBgBJLEHLtmkHcNJ2v1J2DZQrpnUy_Ddyqxlq2Duj9g5E-ysi9TmND7gsq2hyZ_Dpg
+
+###
+
+GET {{baseUrl}}/api/auth/roles
+Authorization: Bearer {{token}}
+
+###
+
+PUT {{baseUrl}}/api/auth/users/1/deactivate
+Authorization: Bearer {{token}}
+
+###
+
+PUT {{baseUrl}}/api/auth/users/1/reactivate
+Authorization: Bearer {{token}}
+
+### ==========================================
+### COURSE SERVICE
+### ==========================================
+
+### List all courses (paginated)
+GET {{baseUrl}}/api/courses?page=0&size=10
+Authorization: Bearer {{token}}
+
+###
+
+### Get single course
+GET {{baseUrl}}/api/courses/1
+Authorization: Bearer {{token}}
+
+###
+
+### Search courses by keyword
+GET {{baseUrl}}/api/courses?keyword=Programming&page=0&size=5
+Authorization: Bearer {{token}}
+
+###
+
+### Search by department
+GET {{baseUrl}}/api/courses?departmentId=1&page=0&size=10
+Authorization: Bearer {{token}}
+
+###
+
+### Create a new course
+POST {{baseUrl}}/api/courses
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "courseCode": "CS-501",
+  "courseNumber": 501,
+  "title": "Advanced Software Engineering",
+  "description": "Design patterns, microservices, clean architecture",
+  "credits": 3,
+  "capacity": 30,
+  "departmentId": 1,
+  "level": "GRADUATE",
+  "status": "ACTIVE"
+}
+
+###
+
+### Update course capacity
+PUT {{baseUrl}}/api/courses/1/capacity
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "capacity": 60
+}
+
+###
+
+### Update course details
+PUT {{baseUrl}}/api/courses/1
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "courseCode": "CS-101",
+  "courseNumber": 101,
+  "title": "Intro to Programming (Updated)",
+  "description": "Updated description",
+  "credits": 3,
+  "departmentId": 1,
+  "level": "UNDERGRADUATE",
+  "status": "ACTIVE"
+}
+
+###
+
+### Get all course sections
+GET {{baseUrl}}/api/courses/sections?semester=FALL&year=2025
+Authorization: Bearer {{token}}
+
+###
+
+### List all degree programs
+GET {{baseUrl}}/api/courses/programs
+Authorization: Bearer {{token}}
+
+###
+
+### Get single degree program
+GET {{baseUrl}}/api/courses/programs/1
+Authorization: Bearer {{token}}
+
+###
+
+### Create change request
+POST {{baseUrl}}/api/courses/change-requests
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "courseId": 1,
+  "requestType": "CAPACITY_CHANGE",
+  "requestedBy": "prof_smith",
+  "proposedValue": "50",
+  "details": "Need more capacity for FALL semester"
+}
+
+###
+
+### List all change requests
+GET {{baseUrl}}/api/courses/change-requests
+Authorization: Bearer {{token}}
+
+###
+
+### Approve change request
+PUT {{baseUrl}}/api/courses/change-requests/1/approve
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "reviewedBy": 3,
+  "reviewComment": "Approved - capacity increase justified"
+}
+
+###
+
+### Reject change request
+PUT {{baseUrl}}/api/courses/change-requests/1/reject
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "reviewedBy": 3,
+  "reviewComment": "Rejected - insufficient justification"
+}
+
+###
+
+### Get all departments
+GET {{baseUrl}}/api/courses/departments
+Authorization: Bearer {{token}}
+
+### ==========================================
+### STUDENT SERVICE
+### ==========================================
+
+### Get all students (paginated)
+GET {{baseUrl}}/api/students?page=0&size=10
+Authorization: Bearer {{token}}
+
+###
+
+### Get single student by ID
+GET {{baseUrl}}/api/students/1
+Authorization: Bearer {{token}}
+
+###
+
+### Update student profile
+PUT {{baseUrl}}/api/students/1
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "firstName": "John",
+  "lastName": "Doe",
+  "email": "john.doe@nexus.edu",
+  "phoneNumber": "+1-555-0101",
+  "major": "Computer Science",
+  "enrollmentYear": 2024
+}
+
+###
+
+### Get student schedule (current enrollments)
+GET {{baseUrl}}/api/students/1/schedule
+Authorization: Bearer {{token}}
+
+###
+
+### Get student enrollment history
+GET {{baseUrl}}/api/students/1/schedule/history
+Authorization: Bearer {{token}}
+
+###
+
+### Get student degree progress
+GET {{baseUrl}}/api/students/1/progress?programId=1
+Authorization: Bearer {{token}}
+
+### ==========================================
+### ENROLLMENT SERVICE
+### ==========================================
+
+### Enroll a student in a section
+POST {{baseUrl}}/api/enrollments
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "sectionId": 1
+}
+
+###
+
+### Get enrollments (by studentId or sectionId)
+GET {{baseUrl}}/api/enrollments?studentId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Get enrollments by section
+GET {{baseUrl}}/api/enrollments?sectionId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Drop enrollment
+DELETE {{baseUrl}}/api/enrollments/1
+Authorization: Bearer {{token}}
+
+###
+
+### Override enrollment (bypass validation - admin use)
+POST {{baseUrl}}/api/enrollments/override
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "sectionId": 2,
+  "reason": "Academic dean override"
+}
+
+###
+
+### Add to waitlist
+POST {{baseUrl}}/api/enrollments/waitlist
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "sectionId": 3
+}
+
+###
+
+### Get waitlist for a section
+GET {{baseUrl}}/api/enrollments/waitlist?sectionId=3
+Authorization: Bearer {{token}}
+
+###
+
+### Remove from waitlist
+DELETE {{baseUrl}}/api/enrollments/waitlist/1
+Authorization: Bearer {{token}}
+
+### ==========================================
+### FACULTY SERVICE
+### ==========================================
+
+### Get faculty by ID
+GET {{baseUrl}}/api/faculty/1
+Authorization: Bearer {{token}}
+
+###
+
+### Get faculty by user ID
+GET {{baseUrl}}/api/faculty/user/2
+Authorization: Bearer {{token}}
+
+###
+
+### Get class roster for a section
+GET {{baseUrl}}/api/faculty/roster?sectionId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Get grades for an enrollment
+GET {{baseUrl}}/api/faculty/grades?enrollmentId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Get single grade by ID
+GET {{baseUrl}}/api/faculty/grades/1
+Authorization: Bearer {{token}}
+
+###
+
+### Create grade draft (DRAFT state - State Pattern)
+# @name createDraft
+POST {{baseUrl}}/api/faculty/grades/draft
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "enrollmentId": 1,
+  "studentId": 1,
+  "sectionId": 1,
+  "assignmentTitle": "Final Exam",
+  "pointsEarned": 87.5,
+  "maxPoints": 100.0,
+  "letterGrade": "B+",
+  "comments": "Good performance throughout the semester",
+  "gradedBy": "prof_smith"
+}
+
+###
+
+### Submit grade for approval (DRAFT -> PENDING transition)
+POST {{baseUrl}}/api/faculty/grades/submit
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "gradeId": 1
+}
+
+###
+
+### Approve grade (PENDING -> APPROVED transition)
+POST {{baseUrl}}/api/faculty/grades/approve
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "gradeId": 1
+}
+
+###
+
+### Reject grade (PENDING -> DRAFT transition)
+POST {{baseUrl}}/api/faculty/grades/reject
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "gradeId": 1
+}
+
+###
+
+### Batch grade submission for a section
+POST {{baseUrl}}/api/faculty/sections/1/grades/batch
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "grades": [
+    {
+      "enrollmentId": 1,
+      "studentId": 1,
+      "assignmentTitle": "Final Grade",
+      "pointsEarned": 92.0,
+      "maxPoints": 100.0,
+      "effectiveGrade": "A",
+      "gradedBy": "prof_smith"
+    },
+    {
+      "enrollmentId": 2,
+      "studentId": 2,
+      "assignmentTitle": "Final Grade",
+      "pointsEarned": 78.5,
+      "maxPoints": 100.0,
+      "effectiveGrade": "C+",
+      "gradedBy": "prof_smith"
+    }
+  ]
+}
+
+### ==========================================
+### ACADEMIC RECORD SERVICE
+### ==========================================
+
+### Get all academic records for a student
+GET {{baseUrl}}/api/records?studentId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Get completed courses for a student
+GET {{baseUrl}}/api/records/completed-courses?studentId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Add a completed course
+POST {{baseUrl}}/api/records/completed-courses
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "courseId": 1,
+  "letterGrade": "A",
+  "semester": "FALL",
+  "year": 2025,
+  "creditsEarned": 3
+}
+
+###
+
+### Get grades for a student
+GET {{baseUrl}}/api/records/grades?studentId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Submit a grade to academic record (from faculty service)
+POST {{baseUrl}}/api/records/grades
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "courseId": 1,
+  "sectionId": 1,
+  "letterGrade": "A",
+  "gradePoints": 4.0,
+  "semester": "FALL",
+  "year": 2025,
+  "credits": 3
+}
+
+###
+
+### Get degree progress
+GET {{baseUrl}}/api/records/degree-progress?studentId=1&programId=1
+Authorization: Bearer {{token}}
+
+###
+
+### Create/update degree progress
+POST {{baseUrl}}/api/records/degree-progress
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "programId": 1,
+  "creditsCompleted": 45,
+  "gpa": 3.7,
+  "academicStanding": "GOOD"
+}
+
+### ==========================================
+### NOTIFICATION SERVICE
+### ==========================================
+
+### Get all notifications for a user
+GET {{baseUrl}}/api/notifications/user/1
+Authorization: Bearer {{token}}
+
+###
+
+### Get unread notifications for a user
+GET {{baseUrl}}/api/notifications/user/1/unread
+Authorization: Bearer {{token}}
+
+###
+
+### Get unread notification count
+GET {{baseUrl}}/api/notifications/user/1/unread-count
+Authorization: Bearer {{token}}
+
+###
+
+### Mark notification as read
+POST {{baseUrl}}/api/notifications/1/read
+Authorization: Bearer {{token}}
+
+###
+
+### Mark all notifications as read
+POST {{baseUrl}}/api/notifications/user/1/read-all
+Authorization: Bearer {{token}}
+
+###
+
+### Create a notification manually
+POST {{baseUrl}}/api/notifications
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "recipientUserId": 1,
+  "title": "Enrollment Confirmed",
+  "message": "You have been enrolled in CS-101",
+  "notificationType": "ENROLLMENT",
+  "priority": "HIGH"
+}
+
+### ==========================================
+### REPORTING SERVICE
+### ==========================================
+
+### Enrollment statistics report
+GET {{baseUrl}}/api/reports/enrollment-stats?semester=FALL&year=2025
+Authorization: Bearer {{token}}
+
+###
+
+### Course popularity report
+GET {{baseUrl}}/api/reports/course-popularity?semester=FALL&year=2025
+Authorization: Bearer {{token}}
+
+###
+
+### Faculty workload report
+GET {{baseUrl}}/api/reports/faculty-workload?semester=FALL&year=2025
+Authorization: Bearer {{token}}
+
+###
+
+### Get all saved audit reports
+GET {{baseUrl}}/api/reports/audit-history
+Authorization: Bearer {{token}}
+
+###
+
+### Get audit report by ID
+GET {{baseUrl}}/api/reports/audit-history/1
+Authorization: Bearer {{token}}
+
+### ==========================================
+### ERROR SCENARIOS (Validation Testing)
+### ==========================================
+
+### Attempt login with wrong password -> 401
+POST {{baseUrl}}/api/auth/login
+Content-Type: {{contentType}}
+
+{
+  "identifier": "john_doe",
+  "password": "WrongPassword!"
+}
+
+###
+
+### Attempt to enroll with invalid student ID -> 400/404
+POST {{baseUrl}}/api/enrollments
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 99999,
+  "sectionId": 1
+}
+
+###
+
+### Attempt duplicate enrollment -> 409/400
+POST {{baseUrl}}/api/enrollments
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "studentId": 1,
+  "sectionId": 1
+}
+
+###
+
+### Get non-existent course -> 404
+GET {{baseUrl}}/api/courses/99999
+Authorization: Bearer {{token}}
+
+###
+
+### Submit invalid grade (bad gradeId) -> 400
+POST {{baseUrl}}/api/faculty/grades/submit
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "gradeId": 0
+}
+
+###
+
+### Invalid state transition (approve from DRAFT directly) -> 400
+### First create a draft, then try to approve without submitting:
+POST {{baseUrl}}/api/faculty/grades/approve
+Authorization: Bearer {{token}}
+Content-Type: {{contentType}}
+
+{
+  "gradeId": 1
+}

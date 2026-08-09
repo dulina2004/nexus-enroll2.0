@@ -18,7 +18,7 @@ import java.util.List;
  * Spring Boot REST Controller for student enrollment and waitlist management.
  */
 @RestController
-@RequestMapping("/enrollments")
+@RequestMapping("/api/enrollments")
 public class EnrollmentController {
 
     private final EnrollmentService enrollmentService;

@@ -19,14 +19,13 @@ services:
     build:
       context: ./auth-service
     container_name: nexus-auth-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_auth
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
-      JWT_SECRET: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2
     depends_on:
       mysql:
         condition: service_healthy
@@ -35,12 +34,12 @@ services:
     build:
       context: ./course-service
     container_name: nexus-course-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_course
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
     depends_on:
       mysql:
@@ -50,33 +49,13 @@ services:
     build:
       context: ./student-service
     container_name: nexus-student-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_student
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
-      ACADEMIC_RECORD_SERVICE_URL: http://academic-record-service:8086
-      ENROLLMENT_SERVICE_URL: http://enrollment-service:8084
-      COURSE_SERVICE_URL: http://course-service:8082
-    depends_on:
-      mysql:
-        condition: service_healthy
-
-  academic-record-service:
-    build:
-      context: ./academic-record-service
-    container_name: nexus-academic-record-service
-    restart: always
-    environment:
-      DB_HOST: mysql
-      DB_PORT: 3306
-      DB_NAME: nexus_academic
-      DB_USER: root
-      DB_PASSWORD: password
-      STUDENT_SERVICE_URL: http://student-service:8083
-      COURSE_SERVICE_URL: http://course-service:8082
     depends_on:
       mysql:
         condition: service_healthy
@@ -85,16 +64,15 @@ services:
     build:
       context: ./enrollment-service
     container_name: nexus-enrollment-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_enrollment
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
-      STUDENT_SERVICE_URL: http://student-service:8083
       COURSE_SERVICE_URL: http://course-service:8082
-      ACADEMIC_RECORD_SERVICE_URL: http://academic-record-service:8086
+      STUDENT_SERVICE_URL: http://student-service:8083
       NOTIFICATION_SERVICE_URL: http://notification-service:8087
     depends_on:
       mysql:
@@ -104,16 +82,29 @@ services:
     build:
       context: ./faculty-service
     container_name: nexus-faculty-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_faculty
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
       ACADEMIC_RECORD_SERVICE_URL: http://academic-record-service:8086
-      STUDENT_SERVICE_URL: http://student-service:8083
-      COURSE_SERVICE_URL: http://course-service:8082
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  academic-record-service:
+    build:
+      context: ./academic-record-service
+    container_name: nexus-academic-record-service
+    restart: on-failure
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: nexus_academic_record
+      DB_USERNAME: root
+      DB_PASSWORD: password
     depends_on:
       mysql:
         condition: service_healthy
@@ -122,12 +113,12 @@ services:
     build:
       context: ./notification-service
     container_name: nexus-notification-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_notification
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
     depends_on:
       mysql:
@@ -137,14 +128,13 @@ services:
     build:
       context: ./reporting-service
     container_name: nexus-reporting-service
-    restart: always
+    restart: on-failure
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
       DB_NAME: nexus_reporting
-      DB_USER: root
+      DB_USERNAME: root
       DB_PASSWORD: password
-      COURSE_SERVICE_URL: http://course-service:8082
       ENROLLMENT_SERVICE_URL: http://enrollment-service:8084
       FACULTY_SERVICE_URL: http://faculty-service:8085
     depends_on:
@@ -155,7 +145,7 @@ services:
     build:
       context: ./api-gateway
     container_name: nexus-api-gateway
-    restart: always
+    restart: on-failure
     ports:
       - "8080:8080"
     environment:
@@ -167,7 +157,6 @@ services:
       ACADEMIC_RECORD_SERVICE_URL: http://academic-record-service:8086
       NOTIFICATION_SERVICE_URL: http://notification-service:8087
       REPORTING_SERVICE_URL: http://reporting-service:8088
-      JWT_SECRET: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2
     depends_on:
       - auth-service
       - course-service

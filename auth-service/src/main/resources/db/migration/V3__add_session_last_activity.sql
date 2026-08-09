@@ -1,0 +1,2 @@
+ALTER TABLE sessions
+    ADD COLUMN last_activity_at TIMESTAMP NULL DEFAULT NULL;
