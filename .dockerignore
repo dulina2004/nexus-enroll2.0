@@ -1,0 +1,14 @@
+**/.git
+**/.gitignore
+**/.idea
+**/.mvn
+**/logs
+**/target/*.original
+**/target/classes
+**/target/generated-sources
+**/target/maven-status
+**/target/surefire-reports
+**/target/test-classes
+**/HELP.md
+**/mvnw
+**/mvnw.cmd

@@ -54,6 +54,7 @@
         <jjwt.version>0.12.6</jjwt.version>
         <springdoc.version>2.8.9</springdoc.version>
         <spring-cloud.version>2023.0.3</spring-cloud.version>
+        <flyway.version>10.10.0</flyway.version>
         <nexusenroll.version>1.0.0-SNAPSHOT</nexusenroll.version>
     </properties>
 
@@ -94,6 +95,17 @@
                 <groupId>org.springdoc</groupId>
                 <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
                 <version>${springdoc.version}</version>
+            </dependency>
+            <!-- Flyway Migration -->
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-core</artifactId>
+                <version>${flyway.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.flywaydb</groupId>
+                <artifactId>flyway-mysql</artifactId>
+                <version>${flyway.version}</version>
             </dependency>
             <!-- Spring Cloud BOM -->
             <dependency>
