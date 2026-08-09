@@ -24,4 +24,4 @@ spring:
             - RewritePath=/api/(?<segment>.*), /${segment}
 
 jwt:
-  secret: nexusenroll-dev-secret-change-in-production-min-32-chars
+  secret: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2

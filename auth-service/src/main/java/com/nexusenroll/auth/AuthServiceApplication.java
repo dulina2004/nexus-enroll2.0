@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point for the NexusEnroll auth-service.
  * Runs on port 8001.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.nexusenroll")
 public class AuthServiceApplication {
 
     public static void main(String[] args) {

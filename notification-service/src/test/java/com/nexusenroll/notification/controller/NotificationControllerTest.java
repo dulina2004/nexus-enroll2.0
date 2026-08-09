@@ -64,7 +64,7 @@ class NotificationControllerTest {
                 }
                 """;
 
-        mockMvc.perform(post("/notifications")
+        mockMvc.perform(post("/api/notifications")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -73,7 +73,7 @@ class NotificationControllerTest {
     }
 
     @Test
-    @DisplayName("GET /notifications/user/101 returns 200 OK")
+    @DisplayName("GET /api/notifications/user/101 returns 200 OK")
     void testGetNotificationsForUser() throws Exception {
         NotificationResponseDto dto = NotificationResponseDto.builder()
                 .id(1L)
@@ -86,26 +86,26 @@ class NotificationControllerTest {
 
         when(notificationService.getNotificationsForUser(101L)).thenReturn(List.of(dto));
 
-        mockMvc.perform(get("/notifications/user/101"))
+        mockMvc.perform(get("/api/notifications/user/101"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data[0].title").value("Welcome"));
     }
 
     @Test
-    @DisplayName("GET /notifications/user/101/unread-count returns 200 OK")
+    @DisplayName("GET /api/notifications/user/101/unread-count returns 200 OK")
     void testGetUnreadCount() throws Exception {
         UnreadCountDto countDto = new UnreadCountDto(101L, 3L);
         when(notificationService.getUnreadCount(101L)).thenReturn(countDto);
 
-        mockMvc.perform(get("/notifications/user/101/unread-count"))
+        mockMvc.perform(get("/api/notifications/user/101/unread-count"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.unreadCount").value(3));
     }
 
     @Test
-    @DisplayName("POST /notifications/1/read returns 200 OK")
+    @DisplayName("POST /api/notifications/1/read returns 200 OK")
     void testMarkAsRead() throws Exception {
         NotificationResponseDto dto = NotificationResponseDto.builder()
                 .id(1L)
@@ -115,7 +115,7 @@ class NotificationControllerTest {
 
         when(notificationService.markAsRead(1L)).thenReturn(dto);
 
-        mockMvc.perform(post("/notifications/1/read"))
+        mockMvc.perform(post("/api/notifications/1/read"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.isRead").value(true));

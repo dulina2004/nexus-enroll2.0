@@ -194,4 +194,22 @@ public class CourseController {
         List<CourseSectionResponseDTO> list = courseService.getSections(courseId);
         return ResponseEntity.ok(ApiResponse.success("Course sections retrieved successfully", list));
     }
+
+    @GetMapping("/sections/{id:\\d+}")
+    public ResponseEntity<ApiResponse<CourseSectionResponseDTO>> getSectionById(@PathVariable Long id) {
+        CourseSectionResponseDTO dto = courseService.getSectionById(id);
+        return ResponseEntity.ok(ApiResponse.success("Course section retrieved successfully", dto));
+    }
+
+    @PostMapping("/sections/{id:\\d+}/enroll")
+    public ResponseEntity<ApiResponse<Void>> reserveSeat(@PathVariable Long id) {
+        courseService.reserveSeat(id);
+        return ResponseEntity.ok(ApiResponse.success("Seat reserved successfully", null));
+    }
+
+    @PostMapping("/sections/{id:\\d+}/drop")
+    public ResponseEntity<ApiResponse<Void>> releaseSeat(@PathVariable Long id) {
+        courseService.releaseSeat(id);
+        return ResponseEntity.ok(ApiResponse.success("Seat released successfully", null));
+    }
 }

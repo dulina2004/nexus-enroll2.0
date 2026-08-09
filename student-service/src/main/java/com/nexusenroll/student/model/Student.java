@@ -59,7 +59,7 @@ public class Student {
     @Column(name = "emergency_contact_phone", length = 20)
     private String emergencyContactPhone;
 
-    @Column(name = "enrollment_date", nullable = false)
+    @Column(name = "admission_date", nullable = false)
     private LocalDate enrollmentDate;
 
     @Column(name = "graduation_date")

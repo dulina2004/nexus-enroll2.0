@@ -55,8 +55,13 @@ public class SecurityConfig {
                         })
                 )
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/register", "/api/auth/roles", "/h2-console/**").permitAll()
-                        .requestMatchers("/api/auth/users/**").hasRole("ADMIN")
+                        .requestMatchers(
+                                org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher("/api/auth/login"),
+                                org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher("/api/auth/register"),
+                                org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher("/api/auth/roles"),
+                                org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher("/h2-console/**")
+                        ).permitAll()
+                        .requestMatchers(org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher("/api/auth/users/**")).hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

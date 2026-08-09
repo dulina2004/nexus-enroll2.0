@@ -1,3 +1,4 @@
+
 ### ============================================================
 ### NexusEnroll API Test Suite
 ### Using VS Code REST Client or IntelliJ HTTP Client
@@ -70,10 +71,8 @@ Content-Type: {{contentType}}
   "password": "Password123!"
 }
 
-### Capture token from response:
-### Set @token = <paste token from login response>
-@token = eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqb2huX2RvZSIsInVzZXJJZCI6NiwiZW1haWwiOiJqb2huLmRvZUBuZXh1cy5lZHUiLCJyb2xlIjoiU1RVREVOVCIsImlhdCI6MTc4NjI2OTk1MSwiZXhwIjoxNzg2Mjk4NzUxfQ.pRZiYEXXDqLZ18pplYi9CBgBJLEHLtmkHcNJ2v1J2DZQrpnUy_Ddyqxlq2Duj9g5E-ysi9TmND7gsq2hyZ_Dpg
-
+### Capture token automatically (VS Code REST Client) or set manually:
+@token = {{login.response.body.data.token}}
 ###
 
 GET {{baseUrl}}/api/auth/roles

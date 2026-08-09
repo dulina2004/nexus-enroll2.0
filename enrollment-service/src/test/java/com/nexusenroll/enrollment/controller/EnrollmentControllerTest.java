@@ -63,7 +63,7 @@ class EnrollmentControllerTest {
                 }
                 """;
 
-        mockMvc.perform(post("/enrollments")
+        mockMvc.perform(post("/api/enrollments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -84,7 +84,7 @@ class EnrollmentControllerTest {
                 }
                 """;
 
-        mockMvc.perform(post("/enrollments")
+        mockMvc.perform(post("/api/enrollments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isBadRequest())
@@ -106,7 +106,7 @@ class EnrollmentControllerTest {
                 }
                 """;
 
-        mockMvc.perform(post("/enrollments/override")
+        mockMvc.perform(post("/api/enrollments/override")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -119,7 +119,7 @@ class EnrollmentControllerTest {
         sampleEnrollment.setStatus("DROPPED");
         when(enrollmentService.drop(10L)).thenReturn(sampleEnrollment);
 
-        mockMvc.perform(delete("/enrollments/10"))
+        mockMvc.perform(delete("/api/enrollments/10"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.status").value("DROPPED"));
@@ -129,7 +129,7 @@ class EnrollmentControllerTest {
     void getEnrollmentsForStudent_success() throws Exception {
         when(enrollmentService.getEnrollmentsForStudent(1L)).thenReturn(List.of(sampleEnrollment));
 
-        mockMvc.perform(get("/enrollments?studentId=1"))
+        mockMvc.perform(get("/api/enrollments?studentId=1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data[0].id").value(10));
@@ -146,7 +146,7 @@ class EnrollmentControllerTest {
                 }
                 """;
 
-        mockMvc.perform(post("/enrollments/waitlist")
+        mockMvc.perform(post("/api/enrollments/waitlist")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(json))
                 .andExpect(status().isCreated())
@@ -157,7 +157,7 @@ class EnrollmentControllerTest {
 
     @Test
     void cancelWaitlist_success() throws Exception {
-        mockMvc.perform(delete("/enrollments/waitlist/5"))
+        mockMvc.perform(delete("/api/enrollments/waitlist/5"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200));
     }

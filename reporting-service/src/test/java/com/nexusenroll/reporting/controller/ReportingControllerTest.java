@@ -56,14 +56,14 @@ class ReportingControllerTest {
 
         when(reportingService.generateEnrollmentReport("SPRING", 2026)).thenReturn(dto);
 
-        mockMvc.perform(get("/reports/enrollment-stats?semester=SPRING&year=2026"))
+        mockMvc.perform(get("/api/reports/enrollment-stats?semester=SPRING&year=2026"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.reportType").value("ENROLLMENT_STATISTICS"));
     }
 
     @Test
-    @DisplayName("GET /reports/course-popularity returns 200 OK")
+    @DisplayName("GET /api/reports/course-popularity returns 200 OK")
     void testGetCoursePopularity() throws Exception {
         ReportResponseDto dto = ReportResponseDto.builder()
                 .title("Course Popularity")
@@ -77,14 +77,14 @@ class ReportingControllerTest {
 
         when(reportingService.generateCoursePopularityReport("SPRING", 2026)).thenReturn(dto);
 
-        mockMvc.perform(get("/reports/course-popularity?semester=SPRING&year=2026"))
+        mockMvc.perform(get("/api/reports/course-popularity?semester=SPRING&year=2026"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.reportType").value("COURSE_POPULARITY"));
     }
 
     @Test
-    @DisplayName("GET /reports/faculty-workload returns 200 OK")
+    @DisplayName("GET /api/reports/faculty-workload returns 200 OK")
     void testGetFacultyWorkload() throws Exception {
         ReportResponseDto dto = ReportResponseDto.builder()
                 .title("Faculty Workload")
@@ -98,14 +98,14 @@ class ReportingControllerTest {
 
         when(reportingService.generateFacultyWorkloadReport("SPRING", 2026)).thenReturn(dto);
 
-        mockMvc.perform(get("/reports/faculty-workload?semester=SPRING&year=2026"))
+        mockMvc.perform(get("/api/reports/faculty-workload?semester=SPRING&year=2026"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.reportType").value("FACULTY_WORKLOAD"));
     }
 
     @Test
-    @DisplayName("GET /reports/audit-history returns 200 OK")
+    @DisplayName("GET /api/reports/audit-history returns 200 OK")
     void testGetAllAuditReports() throws Exception {
         AuditReportResponseDto audit = AuditReportResponseDto.builder()
                 .id(1L)
@@ -119,7 +119,7 @@ class ReportingControllerTest {
 
         when(reportingService.getAllSavedReports()).thenReturn(List.of(audit));
 
-        mockMvc.perform(get("/reports/audit-history"))
+        mockMvc.perform(get("/api/reports/audit-history"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data[0].id").value(1));

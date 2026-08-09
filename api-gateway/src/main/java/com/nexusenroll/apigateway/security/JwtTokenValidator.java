@@ -17,7 +17,7 @@ public class JwtTokenValidator {
 
     private final SecretKey key;
 
-    public JwtTokenValidator(@Value("${jwt.secret:nexusenroll-dev-secret-change-in-production-min-32-chars}") String secret) {
+    public JwtTokenValidator(@Value("${jwt.secret:c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2}") String secret) {
         this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 

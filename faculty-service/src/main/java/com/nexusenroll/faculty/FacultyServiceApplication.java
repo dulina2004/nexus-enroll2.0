@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point for the NexusEnroll faculty-service.
  * Runs on port 8005.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.nexusenroll")
 public class FacultyServiceApplication {
 
     public static void main(String[] args) {

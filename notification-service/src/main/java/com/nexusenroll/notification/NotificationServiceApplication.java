@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point for the NexusEnroll notification-service.
  * Runs on port 8007.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.nexusenroll")
 public class NotificationServiceApplication {
 
     public static void main(String[] args) {

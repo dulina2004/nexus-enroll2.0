@@ -57,7 +57,7 @@ class ReportingIntegrationTest {
         when(courseClient.getCourses()).thenReturn(List.of());
         when(enrollmentClient.getEnrollmentSummary(anyString(), anyInt())).thenReturn(Map.of("totalEnrollments", 0));
 
-        mockMvc.perform(get("/reports/enrollment-stats")
+        mockMvc.perform(get("/api/reports/enrollment-stats")
                 .param("semester", "FALL")
                 .param("year", "2026")
                 .contentType(MediaType.APPLICATION_JSON))

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point for the NexusEnroll academic-record-service.
  * Runs on port 8006.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.nexusenroll")
 public class AcademicRecordServiceApplication {
 
     public static void main(String[] args) {

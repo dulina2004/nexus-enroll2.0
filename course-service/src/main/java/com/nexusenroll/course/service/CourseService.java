@@ -560,4 +560,45 @@ public class CourseService {
         }
         return input.toString().trim();
     }
+
+    @Transactional(readOnly = true)
+    public CourseSectionResponseDTO getSectionById(Long sectionId) {
+        CourseSection s = courseSectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course section not found: " + sectionId));
+        return CourseSectionResponseDTO.builder()
+                .id(s.getId())
+                .courseId(s.getCourseId())
+                .sectionNumber(s.getSectionNumber())
+                .instructorId(s.getInstructorId())
+                .semester(s.getSemester())
+                .year(s.getYear())
+                .scheduleDays(s.getScheduleDays())
+                .startTime(s.getStartTime())
+                .endTime(s.getEndTime())
+                .location(s.getLocation())
+                .capacity(s.getCapacity())
+                .enrolledCount(s.getEnrolledCount())
+                .status(s.getStatus())
+                .createdAt(s.getCreatedAt())
+                .updatedAt(s.getUpdatedAt())
+                .build();
+    }
+
+    @Transactional
+    public void reserveSeat(Long sectionId) {
+        CourseSection s = courseSectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course section not found: " + sectionId));
+        s.setEnrolledCount(s.getEnrolledCount() + 1);
+        courseSectionRepository.save(s);
+    }
+
+    @Transactional
+    public void releaseSeat(Long sectionId) {
+        CourseSection s = courseSectionRepository.findById(sectionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course section not found: " + sectionId));
+        if (s.getEnrolledCount() > 0) {
+            s.setEnrolledCount(s.getEnrolledCount() - 1);
+            courseSectionRepository.save(s);
+        }
+    }
 }

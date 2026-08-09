@@ -60,14 +60,14 @@ class FacultyControllerTest {
 
         when(facultyService.getClassRoster(1L)).thenReturn(roster);
 
-        mockMvc.perform(get("/faculty/roster").param("sectionId", "1"))
+        mockMvc.perform(get("/api/faculty/roster").param("sectionId", "1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.courseCode").value("CS101"));
     }
 
     @Test
-    @DisplayName("GET /faculty/1 returns 200 OK")
+    @DisplayName("GET /api/faculty/1 returns 200 OK")
     void testGetFacultyById() throws Exception {
         FacultyDto dto = FacultyDto.builder()
                 .id(1L)
@@ -77,20 +77,20 @@ class FacultyControllerTest {
 
         when(facultyService.getFaculty(1L)).thenReturn(dto);
 
-        mockMvc.perform(get("/faculty/1"))
+        mockMvc.perform(get("/api/faculty/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.statusCode").value(200))
                 .andExpect(jsonPath("$.data.facultyId").value("FAC-100"));
     }
 
     @Test
-    @DisplayName("POST /faculty/grades/submit updates grade status to PENDING")
+    @DisplayName("POST /api/faculty/grades/submit updates grade status to PENDING")
     void testSubmitGrade() throws Exception {
         GradeContext submitted = new GradeContext(1L, 101L, 201L, 1L, "Quiz 1", 90.0, 100.0, "A", null, "FACULTY", "PENDING");
 
         when(gradeService.submitGrade(1L)).thenReturn(submitted);
 
-        mockMvc.perform(post("/faculty/grades/submit")
+        mockMvc.perform(post("/api/faculty/grades/submit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"gradeId\": 1}"))
                 .andExpect(status().isOk())

@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * Entry point for the NexusEnroll enrollment-service.
  * Runs on port 8004.
  */
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.nexusenroll")
 public class EnrollmentServiceApplication {
 
     public static void main(String[] args) {

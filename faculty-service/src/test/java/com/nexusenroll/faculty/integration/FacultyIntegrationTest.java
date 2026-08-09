@@ -62,7 +62,7 @@ class FacultyIntegrationTest {
                 .letterGrade("B")
                 .build();
 
-        String draftResponseStr = mockMvc.perform(post("/faculty/grades/draft")
+        String draftResponseStr = mockMvc.perform(post("/api/faculty/grades/draft")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(draftRequest)))
                 .andExpect(status().isCreated())
@@ -75,7 +75,7 @@ class FacultyIntegrationTest {
         // 2. Submit Grade -> PENDING
         GradeOperationDto submitRequest = new GradeOperationDto(gradeId);
 
-        mockMvc.perform(post("/faculty/grades/submit")
+        mockMvc.perform(post("/api/faculty/grades/submit")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(submitRequest)))
                 .andExpect(status().isOk())
@@ -84,7 +84,7 @@ class FacultyIntegrationTest {
         // 3. Approve Grade -> APPROVED
         GradeOperationDto approveRequest = new GradeOperationDto(gradeId);
 
-        mockMvc.perform(post("/faculty/grades/approve")
+        mockMvc.perform(post("/api/faculty/grades/approve")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(approveRequest)))
                 .andExpect(status().isOk())
@@ -111,7 +111,7 @@ class FacultyIntegrationTest {
                 .letterGrade("A")
                 .build();
 
-        String draftResponseStr = mockMvc.perform(post("/faculty/grades/draft")
+        String draftResponseStr = mockMvc.perform(post("/api/faculty/grades/draft")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(draftRequest)))
                 .andExpect(status().isCreated())
@@ -122,10 +122,10 @@ class FacultyIntegrationTest {
         // 2. Try to Approve directly from Draft (Invalid transition)
         GradeOperationDto approveRequest = new GradeOperationDto(gradeId);
 
-        mockMvc.perform(post("/faculty/grades/approve")
+        mockMvc.perform(post("/api/faculty/grades/approve")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(approveRequest)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("Invalid state transition")));
+                .andExpect(jsonPath("$.message").value(org.hamcrest.Matchers.containsString("Grade must be submitted to Pending state")));
     }
 }
