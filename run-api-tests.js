@@ -120,13 +120,17 @@ async function start() {
       error: `Status ${regStudent.status}: ${JSON.stringify(regStudent.data)}`
     }));
 
-    // Register Admin
-    const adminUser = `admin_${ts}`;
-    const adminEmail = `admin_${ts}@nexus.edu`;
-    await request('POST', '/api/auth/register', {
-      body: { username: adminUser, email: adminEmail, password: 'Password123!', firstName: 'Admin', lastName: 'User', role: 'ADMIN' },
-      expectedStatus: [200, 201]
+    // Public registration must reject non-STUDENT roles - FACULTY/ADMIN
+    // accounts can only be created by an admin via /api/auth/provision-staff
+    // (previously this endpoint let anyone self-register as ADMIN).
+    const rejectedAdmin = await request('POST', '/api/auth/register', {
+      body: { username: `admin_${ts}`, email: `admin_${ts}@nexus.edu`, password: 'Password123!', firstName: 'Admin', lastName: 'User', role: 'ADMIN' },
+      expectedStatus: 400
     });
+    test('Auth Service', 'Public registration rejects non-STUDENT role', () => ({
+      pass: rejectedAdmin.status === 400,
+      error: `Expected 400, got ${rejectedAdmin.status}: ${JSON.stringify(rejectedAdmin.data)}`
+    }));
 
     // Login Student
     const loginStudent = await request('POST', '/api/auth/login', {
@@ -140,16 +144,28 @@ async function start() {
       error: `Failed to receive token: ${JSON.stringify(loginStudent.data)}`
     }));
 
-    // Login Admin
+    // Login as the seeded demo Admin account (staff accounts are
+    // provisioned, not self-registered - see V2__seed_auth_data.sql)
     const loginAdmin = await request('POST', '/api/auth/login', {
-      body: { identifier: adminUser, password: 'Password123!' }
+      body: { identifier: 'admin', password: 'Password123' }
     });
     if (loginAdmin.isOk && loginAdmin.data?.data?.token) {
       adminToken = loginAdmin.data.data.token;
     }
-    test('Auth Service', 'Login Admin and receive JWT token', () => ({
+    test('Auth Service', 'Login seeded Admin and receive JWT token', () => ({
       pass: !!adminToken,
-      error: `Failed to receive admin token`
+      error: `Failed to receive admin token: ${JSON.stringify(loginAdmin.data)}`
+    }));
+
+    // Admin-only: provision a new FACULTY account
+    const provisionRes = await request('POST', '/api/auth/provision-staff', {
+      token: adminToken,
+      body: { username: `faculty_${ts}`, email: `faculty_${ts}@nexus.edu`, password: 'Password123!', firstName: 'New', lastName: 'Faculty', role: 'FACULTY' },
+      expectedStatus: [200, 201]
+    });
+    test('Auth Service', 'Admin provisions a new FACULTY account', () => ({
+      pass: provisionRes.isOk,
+      error: `Status ${provisionRes.status}: ${JSON.stringify(provisionRes.data)}`
     }));
 
     // Get Roles with Bearer token

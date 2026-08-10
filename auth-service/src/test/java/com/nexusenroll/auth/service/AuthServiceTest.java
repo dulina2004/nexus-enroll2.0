@@ -9,7 +9,6 @@ import com.nexusenroll.auth.factory.StudentFactory;
 import com.nexusenroll.auth.model.Role;
 import com.nexusenroll.auth.model.StudentUser;
 import com.nexusenroll.auth.model.User;
-import com.nexusenroll.auth.repository.SessionRepository;
 import com.nexusenroll.auth.repository.UserRepository;
 import com.nexusenroll.auth.security.JwtTokenProvider;
 import com.nexusenroll.common.exception.AuthenticationException;
@@ -34,7 +33,7 @@ class AuthServiceTest {
     private UserRepository userRepository;
 
     @Mock
-    private SessionRepository sessionRepository;
+    private SessionService sessionService;
 
     @Mock
     private PasswordEncoder passwordEncoder;
@@ -53,7 +52,7 @@ class AuthServiceTest {
 
         authService = new AuthService(
                 userRepository,
-                sessionRepository,
+                sessionService,
                 passwordEncoder,
                 jwtTokenProvider,
                 studentFactory,

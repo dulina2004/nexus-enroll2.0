@@ -2,15 +2,14 @@ package com.nexusenroll.auth.service;
 
 import com.nexusenroll.auth.dto.AuthResponseDTO;
 import com.nexusenroll.auth.dto.LoginRequestDTO;
+import com.nexusenroll.auth.dto.ProvisionStaffRequestDTO;
 import com.nexusenroll.auth.dto.RegisterRequestDTO;
 import com.nexusenroll.auth.factory.AdminFactory;
 import com.nexusenroll.auth.factory.FacultyFactory;
 import com.nexusenroll.auth.factory.StudentFactory;
 import com.nexusenroll.auth.factory.UserFactory;
 import com.nexusenroll.auth.model.Role;
-import com.nexusenroll.auth.model.Session;
 import com.nexusenroll.auth.model.User;
-import com.nexusenroll.auth.repository.SessionRepository;
 import com.nexusenroll.auth.repository.UserRepository;
 import com.nexusenroll.auth.security.JwtTokenProvider;
 import com.nexusenroll.common.exception.AuthenticationException;
@@ -39,14 +38,14 @@ public class AuthService {
     private static final int LOCK_MINUTES = 15;
 
     private final UserRepository userRepository;
-    private final SessionRepository sessionRepository;
+    private final SessionService sessionService;
     private final PasswordEncoder passwordEncoder;
     private final JwtTokenProvider jwtTokenProvider;
     private final Map<Role, UserFactory> factories;
     private final long jwtExpirationMs;
 
     public AuthService(UserRepository userRepository,
-                       SessionRepository sessionRepository,
+                       SessionService sessionService,
                        PasswordEncoder passwordEncoder,
                        JwtTokenProvider jwtTokenProvider,
                        StudentFactory studentFactory,
@@ -54,7 +53,7 @@ public class AuthService {
                        AdminFactory adminFactory,
                        @Value("${jwt.expiration-ms:28800000}") long jwtExpirationMs) {
         this.userRepository = userRepository;
-        this.sessionRepository = sessionRepository;
+        this.sessionService = sessionService;
         this.passwordEncoder = passwordEncoder;
         this.jwtTokenProvider = jwtTokenProvider;
         this.jwtExpirationMs = jwtExpirationMs;
@@ -68,16 +67,18 @@ public class AuthService {
     public AuthResponseDTO register(RegisterRequestDTO request) {
         validateRegisterRequest(request);
 
+        // Public self-registration only ever creates STUDENT accounts.
+        // FACULTY/ADMIN accounts can only be created by an admin via
+        // provisionStaffAccount() below - otherwise anyone could self-register
+        // as an administrator by putting "role":"ADMIN" in the request body.
         Role role;
         try {
             role = Role.fromString(request.getRole());
         } catch (IllegalArgumentException e) {
             throw new ValidationException("Unsupported role: " + request.getRole());
         }
-
-        UserFactory factory = factories.get(role);
-        if (factory == null) {
-            throw new ValidationException("Unsupported role: " + request.getRole());
+        if (role != Role.STUDENT) {
+            throw new ValidationException("Public registration is only available for students. Contact an administrator for a faculty or admin account.");
         }
 
         if (userRepository.existsByUsername(request.getUsername().trim())) {
@@ -88,15 +89,57 @@ public class AuthService {
         }
 
         String hashedPassword = passwordEncoder.encode(request.getPassword());
-        User user = factory.createUser(request, hashedPassword);
+        User user = factories.get(Role.STUDENT).createUser(request, hashedPassword);
         User savedUser = userRepository.save(user);
 
         String token = jwtTokenProvider.generateToken(savedUser);
         long expiresAt = System.currentTimeMillis() + jwtExpirationMs;
 
-        saveSession(savedUser.getId(), token, expiresAt);
+        sessionService.saveSession(savedUser.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
 
         return AuthResponseDTO.fromUser(savedUser, token, expiresAt);
+    }
+
+    /**
+     * Admin-only: provisions a FACULTY or ADMIN account. Unlike register(),
+     * this does not log the new user in - it just creates the account for
+     * them to log into separately.
+     */
+    public User provisionStaffAccount(ProvisionStaffRequestDTO request) {
+        if (request == null) {
+            throw new ValidationException("Request body is required");
+        }
+        Role role;
+        try {
+            role = Role.fromString(request.getRole());
+        } catch (IllegalArgumentException e) {
+            throw new ValidationException("Unsupported role: " + request.getRole());
+        }
+        if (role != Role.FACULTY && role != Role.ADMIN) {
+            throw new ValidationException("provision-staff can only create FACULTY or ADMIN accounts");
+        }
+
+        RegisterRequestDTO asRegisterRequest = RegisterRequestDTO.builder()
+                .username(request.getUsername())
+                .email(request.getEmail())
+                .password(request.getPassword())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .phoneNumber(request.getPhoneNumber())
+                .role(request.getRole())
+                .build();
+        validateRegisterRequest(asRegisterRequest);
+
+        if (userRepository.existsByUsername(request.getUsername().trim())) {
+            throw new ValidationException("Username already exists");
+        }
+        if (userRepository.existsByEmail(request.getEmail().trim().toLowerCase())) {
+            throw new ValidationException("Email already exists");
+        }
+
+        String hashedPassword = passwordEncoder.encode(request.getPassword());
+        User user = factories.get(role).createUser(asRegisterRequest, hashedPassword);
+        return userRepository.save(user);
     }
 
     public AuthResponseDTO login(LoginRequestDTO request) {
@@ -132,7 +175,7 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(user);
         long expiresAt = System.currentTimeMillis() + jwtExpirationMs;
 
-        saveSession(user.getId(), token, expiresAt);
+        sessionService.saveSession(user.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
 
         return AuthResponseDTO.fromUser(user, token, expiresAt);
     }
@@ -158,22 +201,6 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         user.setStatus(status);
         return userRepository.save(user);
-    }
-
-    private void saveSession(Long userId, String token, long expiresAtMs) {
-        try {
-            String tokenHash = hashToken(token);
-            if (sessionRepository.findByTokenHash(tokenHash).isPresent()) {
-                return;
-            }
-            Session session = Session.builder()
-                    .userId(userId)
-                    .tokenHash(tokenHash)
-                    .expiresAt(Instant.ofEpochMilli(expiresAtMs))
-                    .lastActivityAt(Instant.now())
-                    .build();
-            sessionRepository.save(session);
-        } catch (Exception ignored) {}
     }
 
     private String hashToken(String token) {

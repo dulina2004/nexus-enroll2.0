@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -393,8 +395,8 @@ public class CourseService {
                         .semester(s.getSemester())
                         .year(s.getYear())
                         .scheduleDays(s.getScheduleDays())
-                        .startTime(s.getStartTime())
-                        .endTime(s.getEndTime())
+                        .startTime(formatTime(s.getStartTime()))
+                        .endTime(formatTime(s.getEndTime()))
                         .location(s.getLocation())
                         .capacity(s.getCapacity())
                         .enrolledCount(s.getEnrolledCount())
@@ -561,6 +563,12 @@ public class CourseService {
         return input.toString().trim();
     }
 
+    private static final DateTimeFormatter TIME_FORMAT = DateTimeFormatter.ofPattern("HH:mm:ss");
+
+    private static String formatTime(LocalTime time) {
+        return time == null ? null : time.format(TIME_FORMAT);
+    }
+
     @Transactional(readOnly = true)
     public CourseSectionResponseDTO getSectionById(Long sectionId) {
         CourseSection s = courseSectionRepository.findById(sectionId)
@@ -573,8 +581,8 @@ public class CourseService {
                 .semester(s.getSemester())
                 .year(s.getYear())
                 .scheduleDays(s.getScheduleDays())
-                .startTime(s.getStartTime())
-                .endTime(s.getEndTime())
+                .startTime(formatTime(s.getStartTime()))
+                .endTime(formatTime(s.getEndTime()))
                 .location(s.getLocation())
                 .capacity(s.getCapacity())
                 .enrolledCount(s.getEnrolledCount())

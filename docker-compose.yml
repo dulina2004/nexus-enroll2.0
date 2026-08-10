@@ -6,6 +6,8 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: nexus_auth
+    ports:
+      - "3307:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./init-db:/docker-entrypoint-initdb.d
@@ -14,10 +16,13 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    networks:
+      - nexus-network
 
   auth-service:
     build:
-      context: ./auth-service
+      context: .
+      dockerfile: auth-service/Dockerfile
     container_name: nexus-auth-service
     restart: on-failure
     environment:
@@ -27,13 +32,22 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: password
       JWT_SECRET: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   course-service:
     build:
-      context: ./course-service
+      context: .
+      dockerfile: course-service/Dockerfile
     container_name: nexus-course-service
     restart: on-failure
     environment:
@@ -42,13 +56,22 @@ services:
       DB_NAME: nexus_course
       DB_USERNAME: root
       DB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   student-service:
     build:
-      context: ./student-service
+      context: .
+      dockerfile: student-service/Dockerfile
     container_name: nexus-student-service
     restart: on-failure
     environment:
@@ -57,13 +80,22 @@ services:
       DB_NAME: nexus_student
       DB_USERNAME: root
       DB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8083/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   enrollment-service:
     build:
-      context: ./enrollment-service
+      context: .
+      dockerfile: enrollment-service/Dockerfile
     container_name: nexus-enrollment-service
     restart: on-failure
     environment:
@@ -75,13 +107,22 @@ services:
       COURSE_SERVICE_URL: http://course-service:8082
       STUDENT_SERVICE_URL: http://student-service:8083
       NOTIFICATION_SERVICE_URL: http://notification-service:8087
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   faculty-service:
     build:
-      context: ./faculty-service
+      context: .
+      dockerfile: faculty-service/Dockerfile
     container_name: nexus-faculty-service
     restart: on-failure
     environment:
@@ -91,13 +132,22 @@ services:
       DB_USERNAME: root
       DB_PASSWORD: password
       ACADEMIC_RECORD_SERVICE_URL: http://academic-record-service:8086
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8085/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   academic-record-service:
     build:
-      context: ./academic-record-service
+      context: .
+      dockerfile: academic-record-service/Dockerfile
     container_name: nexus-academic-record-service
     restart: on-failure
     environment:
@@ -106,13 +156,22 @@ services:
       DB_NAME: nexus_academic_record
       DB_USERNAME: root
       DB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8086/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   notification-service:
     build:
-      context: ./notification-service
+      context: .
+      dockerfile: notification-service/Dockerfile
     container_name: nexus-notification-service
     restart: on-failure
     environment:
@@ -121,13 +180,22 @@ services:
       DB_NAME: nexus_notification
       DB_USERNAME: root
       DB_PASSWORD: password
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8087/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   reporting-service:
     build:
-      context: ./reporting-service
+      context: .
+      dockerfile: reporting-service/Dockerfile
     container_name: nexus-reporting-service
     restart: on-failure
     environment:
@@ -138,13 +206,22 @@ services:
       DB_PASSWORD: password
       ENROLLMENT_SERVICE_URL: http://enrollment-service:8084
       FACULTY_SERVICE_URL: http://faculty-service:8085
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
       mysql:
         condition: service_healthy
+    networks:
+      - nexus-network
 
   api-gateway:
     build:
-      context: ./api-gateway
+      context: .
+      dockerfile: api-gateway/Dockerfile
     container_name: nexus-api-gateway
     restart: on-failure
     ports:
@@ -159,15 +236,52 @@ services:
       NOTIFICATION_SERVICE_URL: http://notification-service:8087
       REPORTING_SERVICE_URL: http://reporting-service:8088
       JWT_SECRET: c3VwZXJzZWNyZXRqd3RzaWduaW5na2V5bmV4dXNlbnJvbGxtaWdyYXRpb24yMDI2
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 45s
     depends_on:
-      - auth-service
-      - course-service
-      - student-service
-      - enrollment-service
-      - faculty-service
-      - academic-record-service
-      - notification-service
-      - reporting-service
+      auth-service:
+        condition: service_healthy
+      course-service:
+        condition: service_healthy
+      student-service:
+        condition: service_healthy
+      enrollment-service:
+        condition: service_healthy
+      faculty-service:
+        condition: service_healthy
+      academic-record-service:
+        condition: service_healthy
+      notification-service:
+        condition: service_healthy
+      reporting-service:
+        condition: service_healthy
+    networks:
+      - nexus-network
+
+  frontend:
+    build:
+      context: ../nexus-enroll2.0-frontend
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ""
+        VITE_USE_MOCK_FALLBACK: "false"
+    container_name: nexus-frontend
+    restart: on-failure
+    ports:
+      - "8085:80"
+    depends_on:
+      api-gateway:
+        condition: service_healthy
+    networks:
+      - nexus-network
+
+networks:
+  nexus-network:
+    driver: bridge
 
 volumes:
   mysql_data:

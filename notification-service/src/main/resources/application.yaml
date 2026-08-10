@@ -35,3 +35,12 @@ logging:
   level:
     com.nexusenroll: DEBUG
     org.springframework.security: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: never

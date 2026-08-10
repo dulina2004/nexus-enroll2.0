@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.time.LocalTime;
 
 /**
  * JPA entity representing a course section / offering.
@@ -42,10 +43,10 @@ public class CourseSection {
     private String scheduleDays;
 
     @Column(name = "start_time")
-    private String startTime;
+    private LocalTime startTime;
 
     @Column(name = "end_time")
-    private String endTime;
+    private LocalTime endTime;
 
     @Column(length = 100)
     private String location;

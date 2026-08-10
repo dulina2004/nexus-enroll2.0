@@ -28,11 +28,11 @@ public class ProgramRequirement {
     @Column(name = "course_id", nullable = false)
     private Long courseId;
 
-    @Column(name = "requirement_type", nullable = false, length = 20)
+    @Column(name = "requirement_type", nullable = false, length = 50)
     @Builder.Default
     private String requirementType = "CORE";
 
-    @Column(name = "minimum_grade", length = 5)
+    @Column(name = "minimum_grade", length = 10)
     @Builder.Default
     private String minimumGrade = "C";
 

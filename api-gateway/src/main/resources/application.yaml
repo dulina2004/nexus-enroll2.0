@@ -15,23 +15,10 @@ spring:
       reactive:
         enabled: false
     gateway:
-      globalcors:
-        cors-configurations:
-          '[/**]':
-            allowedOrigins:
-              - "http://localhost:3000"
-              - "http://localhost:5173"
-              - "http://127.0.0.1:3000"
-              - "http://127.0.0.1:5173"
-            allowedMethods:
-              - GET
-              - POST
-              - PUT
-              - DELETE
-              - OPTIONS
-              - PATCH
-            allowedHeaders: "*"
-            allowCredentials: true
+      # CORS is handled by the single CorsWebFilter bean in CorsConfig.java.
+      # Do NOT also configure globalcors here - Spring Cloud Gateway's
+      # globalcors and a CorsWebFilter both add Access-Control-Allow-Origin
+      # headers, and browsers reject the resulting duplicate header.
       routes:
         - id: auth-service
           uri: ${AUTH_SERVICE_URL:http://localhost:8081}

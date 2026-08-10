@@ -2,6 +2,7 @@ package com.nexusenroll.auth.controller;
 
 import com.nexusenroll.auth.dto.AuthResponseDTO;
 import com.nexusenroll.auth.dto.LoginRequestDTO;
+import com.nexusenroll.auth.dto.ProvisionStaffRequestDTO;
 import com.nexusenroll.auth.dto.RegisterRequestDTO;
 import com.nexusenroll.auth.model.Role;
 import com.nexusenroll.auth.model.User;
@@ -38,6 +39,12 @@ public class AuthController {
     public ResponseEntity<ApiResponse<AuthResponseDTO>> register(@Valid @RequestBody RegisterRequestDTO request) {
         AuthResponseDTO response = authService.register(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created("User registered successfully", response));
+    }
+
+    @PostMapping("/provision-staff")
+    public ResponseEntity<ApiResponse<User>> provisionStaffAccount(@Valid @RequestBody ProvisionStaffRequestDTO request) {
+        User user = authService.provisionStaffAccount(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.created("Staff account created successfully", user));
     }
 
     @GetMapping("/roles")
