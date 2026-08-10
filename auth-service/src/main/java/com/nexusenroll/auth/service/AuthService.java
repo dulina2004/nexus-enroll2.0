@@ -16,6 +16,8 @@ import com.nexusenroll.common.exception.AuthenticationException;
 import com.nexusenroll.common.exception.ResourceNotFoundException;
 import com.nexusenroll.common.exception.ValidationException;
 import com.nexusenroll.common.util.StringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -34,6 +36,7 @@ import java.util.Map;
 @Transactional
 public class AuthService {
 
+    private static final Logger log = LoggerFactory.getLogger(AuthService.class);
     private static final int MAX_LOGIN_ATTEMPTS = 5;
     private static final int LOCK_MINUTES = 15;
 
@@ -95,7 +98,7 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(savedUser);
         long expiresAt = System.currentTimeMillis() + jwtExpirationMs;
 
-        sessionService.saveSession(savedUser.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
+        trySaveSession(savedUser.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
 
         return AuthResponseDTO.fromUser(savedUser, token, expiresAt);
     }
@@ -175,7 +178,7 @@ public class AuthService {
         String token = jwtTokenProvider.generateToken(user);
         long expiresAt = System.currentTimeMillis() + jwtExpirationMs;
 
-        sessionService.saveSession(user.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
+        trySaveSession(user.getId(), hashToken(token), Instant.ofEpochMilli(expiresAt));
 
         return AuthResponseDTO.fromUser(user, token, expiresAt);
     }
@@ -201,6 +204,25 @@ public class AuthService {
                 .orElseThrow(() -> new ResourceNotFoundException("User not found: " + userId));
         user.setStatus(status);
         return userRepository.save(user);
+    }
+
+    /**
+     * SessionService.saveSession runs in its own REQUIRES_NEW transaction and
+     * already catches write failures internally - but a REQUIRES_NEW
+     * transaction that Hibernate marked rollback-only (e.g. after a lock-wait
+     * timeout during flush) still throws UnexpectedRollbackException from the
+     * transactional proxy's own commit step, which happens *after* that
+     * method body returns and so is outside its internal try/catch. Without
+     * this wrapper, that exception propagates into register()/login() and
+     * fails the whole request (and rolls back the user row) over what should
+     * be a fire-and-forget audit write.
+     */
+    private void trySaveSession(Long userId, String tokenHash, Instant expiresAt) {
+        try {
+            sessionService.saveSession(userId, tokenHash, expiresAt);
+        } catch (Exception e) {
+            log.warn("Session persistence failed for user {}: {}", userId, e.getMessage());
+        }
     }
 
     private String hashToken(String token) {

@@ -9,12 +9,15 @@ This guide provides instructions on how to execute test suites for the **NexusEn
 
 ## 🚀 Option 1: Automated End-to-End API Tests (`node run-api-tests.js`)
 
-This option runs **38 automated API test cases** against the live system through the **API Gateway (`http://localhost:8080`)**.
+This option runs **40 automated API test cases** against the live system through the **API Gateway (`http://localhost:8080`)**.
 
 ### **Prerequisites**
-All microservices and MySQL must be running in Docker:
+All microservices, MySQL, and the frontend must be running in Docker. Always wipe the volume
+first if you've pulled changes to any `V2__seed_*.sql` file (Flyway will otherwise refuse to
+start against stale checksums) - see [DOCKER.md](DOCKER.md) for the full explanation:
 ```powershell
-docker compose up -d --build
+docker compose down -v
+docker compose up --build -d
 ```
 
 ### **Run Command**
@@ -22,8 +25,8 @@ docker compose up -d --build
 node run-api-tests.js
 ```
 
-### **What It Tests (38/38 Endpoints Passing):**
-- 🔑 **Auth Service**: Student/Admin Registration, JWT Login, Role Validation
+### **What It Tests (40/40 Endpoints Passing):**
+- 🔑 **Auth Service**: Student Registration, public registration correctly rejecting non-STUDENT roles, JWT Login (seeded demo accounts and freshly registered ones), Admin-only Staff Provisioning (`/api/auth/provision-staff`), Role Validation
 - 📚 **Course Service**: Paginated Search, Course Creation, Section Queries, Degree Programs, Change Requests
 - 👨‍🎓 **Student Service**: Profiles, Schedule Queries, Degree Progress
 - 📝 **Enrollment Service**: Course Enrollment, Student Enrollments Query, Waitlist Management
@@ -86,11 +89,18 @@ mvn test -pl api-gateway
 | **Type** | End-to-End (E2E) Integration Testing | Unit & Controller Mock Testing |
 | **Environment Required** | Docker Containers Running (`localhost:8080`) | Offline (No Docker required) |
 | **Target Scope** | Real Network Calls via API Gateway | Mocked Beans & Controllers |
-| **Total Test Count** | 38 API Endpoints | 80+ Java JUnit Test Cases |
+| **Total Test Count** | 40 API Endpoints | 80+ Java JUnit Test Cases |
 | **Execution Time** | ~3 - 5 seconds | ~1 minute |
 
 ---
 
 ## ✅ Current Test Status
-- **`node run-api-tests.js`**: `38 / 38 PASSED` 🎉
+- **`node run-api-tests.js`**: `40 / 40 PASSED` 🎉
 - **`mvn test`**: `11 / 11 MODULES BUILD SUCCESS` 🎉
+
+---
+
+## 🔑 Demo Login Credentials
+
+All seeded demo accounts share the password **`Password123`**. See [DOCKER.md](DOCKER.md) for
+the full list, the one-command startup flow, and troubleshooting.
