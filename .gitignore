@@ -35,4 +35,3 @@ build/
 ### Project hygiene ###
 *.log
 _archive/
-.env
