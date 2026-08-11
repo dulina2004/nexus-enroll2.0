@@ -16,6 +16,12 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Drives grade lifecycle operations — create/update draft, submit, approve,
+ * reject and batch-submit — delegating status transitions to the State
+ * pattern ({@link GradeContext} / {@code GradeState}). Called by
+ * {@link com.nexusenroll.faculty.controller.FacultyController}.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

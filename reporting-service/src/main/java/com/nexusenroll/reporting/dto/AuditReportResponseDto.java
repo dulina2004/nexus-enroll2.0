@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/**
+ * Response DTO representing a persisted {@link com.nexusenroll.reporting.model.AuditReport} audit record.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

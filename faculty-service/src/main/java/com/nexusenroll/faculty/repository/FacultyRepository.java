@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link Faculty} lookups by primary key, user ID and faculty ID.
+ */
 @Repository
 public interface FacultyRepository extends JpaRepository<Faculty, Long> {
     Optional<Faculty> findByUserId(Long userId);

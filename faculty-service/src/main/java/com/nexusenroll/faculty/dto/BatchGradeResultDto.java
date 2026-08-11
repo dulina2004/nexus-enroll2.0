@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Result of a batch grade submission, with submitted grade IDs and per-entry failures.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

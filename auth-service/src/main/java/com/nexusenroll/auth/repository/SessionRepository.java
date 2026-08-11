@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link Session}, adding lookup by token hash.
+ */
 @Repository
 public interface SessionRepository extends JpaRepository<Session, Long> {
     Optional<Session> findByTokenHash(String tokenHash);

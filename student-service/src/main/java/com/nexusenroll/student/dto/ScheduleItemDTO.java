@@ -2,6 +2,9 @@ package com.nexusenroll.student.dto;
 
 import lombok.*;
 
+/**
+ * DTO representing a single scheduled course section within a student's {@link ScheduleDTO}.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

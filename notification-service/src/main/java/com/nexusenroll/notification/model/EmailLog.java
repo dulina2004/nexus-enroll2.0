@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/** JPA entity persisting a record of an email notification sent by {@link com.nexusenroll.notification.observer.EmailNotifier}, including recipient, content, and delivery status. */
 @Entity
 @Table(name = "emails")
 @Getter

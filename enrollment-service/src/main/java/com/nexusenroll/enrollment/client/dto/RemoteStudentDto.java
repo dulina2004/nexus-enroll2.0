@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Student profile data as returned by the Student Service.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

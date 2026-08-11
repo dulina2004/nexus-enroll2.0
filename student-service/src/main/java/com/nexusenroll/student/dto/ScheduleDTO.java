@@ -5,6 +5,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO representing a student's course schedule for a given semester and year.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

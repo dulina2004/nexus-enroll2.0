@@ -2,6 +2,9 @@ package com.nexusenroll.student.dto;
 
 import lombok.*;
 
+/**
+ * DTO carrying course section details fetched from course-service.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

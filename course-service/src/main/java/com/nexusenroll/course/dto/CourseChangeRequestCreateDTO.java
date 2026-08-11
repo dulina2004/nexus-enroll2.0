@@ -3,6 +3,11 @@ package com.nexusenroll.course.dto;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * Payload for submitting a new course change request, consumed by the create-request
+ * operation; several fields carry client-facing aliases (e.g. {@code facultyId} for
+ * {@code requestedBy}, {@code reason} for {@code justification}).
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

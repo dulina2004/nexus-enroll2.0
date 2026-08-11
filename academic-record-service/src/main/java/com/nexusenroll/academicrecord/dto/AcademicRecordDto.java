@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/** Aggregated view of a student's academic record: GPA, credits, courses, grades and degree progress. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
+/**
+ * Public self-registration request. {@code role} is only honoured for STUDENT;
+ * see {@link com.nexusenroll.auth.service.AuthService#register}.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

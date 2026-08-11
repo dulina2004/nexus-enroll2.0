@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.time.LocalDate;
 
+/**
+ * DTO for creating or updating a student's profile fields.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

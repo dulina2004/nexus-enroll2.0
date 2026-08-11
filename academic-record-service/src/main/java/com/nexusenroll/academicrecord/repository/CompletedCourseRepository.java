@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/** Spring Data repository for {@link CompletedCourse}, adding lookup by student. */
 @Repository
 public interface CompletedCourseRepository extends JpaRepository<CompletedCourse, Long> {
 

@@ -6,6 +6,9 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
+/**
+ * JPA entity representing a document uploaded by or on behalf of a student.
+ */
 @Entity
 @Table(name = "student_documents", schema = "nexus_student")
 @Getter

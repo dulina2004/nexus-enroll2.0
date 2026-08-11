@@ -2,6 +2,7 @@ package com.nexusenroll.notification.event;
 
 import lombok.Getter;
 
+/** Fired when a student successfully enrolls in a course; carries the enrollment ID for the {@code ENROLLMENT_SUCCESS} notification. */
 @Getter
 public class EnrollmentCreatedEvent extends NotificationEvent {
 

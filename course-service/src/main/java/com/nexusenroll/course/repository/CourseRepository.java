@@ -10,6 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link Course}, adding lookup by course code, dynamic
+ * specification-based search, and modifying queries to update capacity or soft-delete
+ * (archive) a course.
+ */
 @Repository
 public interface CourseRepository extends JpaRepository<Course, Long>, JpaSpecificationExecutor<Course> {
 

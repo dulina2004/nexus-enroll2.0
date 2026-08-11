@@ -6,6 +6,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 
+/**
+ * DTO returned to clients containing a student's full profile data.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

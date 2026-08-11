@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/** Spring Data repository providing lookup and unread-count queries for {@link Notification} records by recipient user. */
 @Repository
 public interface NotificationRepository extends JpaRepository<Notification, Long> {
 

@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring Data repository for {@link CourseSection}, adding lookup by course and a sum
+ * of enrolled counts across a course's active (non-cancelled) sections.
+ */
 @Repository
 public interface CourseSectionRepository extends JpaRepository<CourseSection, Long> {
 

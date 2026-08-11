@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/** Spring Data repository for {@link DegreeProgress}, adding lookup by student. */
 @Repository
 public interface DegreeProgressRepository extends JpaRepository<DegreeProgress, Long> {
 

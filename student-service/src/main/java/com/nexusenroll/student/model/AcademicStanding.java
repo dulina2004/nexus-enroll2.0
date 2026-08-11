@@ -9,6 +9,9 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
 
+/**
+ * JPA entity representing a student's academic standing relative to a GPA threshold.
+ */
 @Entity
 @Table(name = "academic_standing", schema = "nexus_student")
 @Getter

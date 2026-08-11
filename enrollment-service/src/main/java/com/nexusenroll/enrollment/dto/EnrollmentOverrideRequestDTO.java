@@ -3,6 +3,10 @@ package com.nexusenroll.enrollment.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+/**
+ * Request payload for an administrator to force-enroll a student into a section,
+ * bypassing normal validation checks.
+ */
 public class EnrollmentOverrideRequestDTO {
 
     @NotNull(message = "Student ID is required")

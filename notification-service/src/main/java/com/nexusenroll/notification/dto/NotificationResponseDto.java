@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+/** Response payload representing a notification returned to API clients. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

@@ -12,6 +12,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * JPA entity for a single grade record, tracking its points, letter grade and lifecycle status.
+ */
 @Entity
 @Table(name = "grades")
 @Getter

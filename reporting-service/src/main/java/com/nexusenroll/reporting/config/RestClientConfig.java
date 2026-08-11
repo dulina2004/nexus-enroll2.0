@@ -7,6 +7,10 @@ import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
+/**
+ * Configures the shared {@code RestClient.Builder} bean used by the HTTP client implementations,
+ * setting connect and read timeouts for calls to upstream microservices.
+ */
 @Configuration
 public class RestClientConfig {
 

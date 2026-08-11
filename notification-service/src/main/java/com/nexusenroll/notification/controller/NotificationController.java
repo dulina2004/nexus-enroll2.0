@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller exposing notification endpoints: dispatching a new notification, listing a
+ * user's notifications (all or unread only), retrieving the unread count, and marking
+ * notifications as read individually or in bulk. Delegates all logic to {@link NotificationService}.
+ */
 @RestController
 @RequestMapping("/api/notifications")
 @RequiredArgsConstructor

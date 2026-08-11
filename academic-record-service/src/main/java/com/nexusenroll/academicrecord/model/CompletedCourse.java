@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** Entity mapping one course a student has finished, with its grade and credits. */
 @Entity
 @Table(name = "academic_history")
 @Getter

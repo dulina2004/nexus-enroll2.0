@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/** Entity tracking one student's progress toward degree completion by credit category. */
 @Entity
 @Table(name = "degree_progress")
 @Getter

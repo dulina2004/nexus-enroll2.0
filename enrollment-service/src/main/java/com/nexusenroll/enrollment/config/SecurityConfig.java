@@ -7,6 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Spring Security configuration for the enrollment service. Disables CSRF and
+ * currently permits all requests.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

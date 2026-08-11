@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link WaitlistEntry} records.
+ */
 @Repository
 public interface WaitlistRepository extends JpaRepository<WaitlistEntry, Long> {
 

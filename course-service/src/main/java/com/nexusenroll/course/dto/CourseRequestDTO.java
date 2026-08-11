@@ -5,6 +5,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * Payload for creating or updating a course, consumed by the course create/update
+ * operations.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

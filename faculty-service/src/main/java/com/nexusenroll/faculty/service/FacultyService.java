@@ -13,6 +13,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 
+/**
+ * Looks up faculty profiles and builds class rosters for a section.
+ * Called by {@link com.nexusenroll.faculty.controller.FacultyController}.
+ */
 @Slf4j
 @Service
 @RequiredArgsConstructor

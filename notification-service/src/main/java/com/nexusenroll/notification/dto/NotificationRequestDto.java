@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** Request payload describing the event to notify a recipient about, submitted to {@link com.nexusenroll.notification.controller.NotificationController}. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

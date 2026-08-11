@@ -16,6 +16,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+/**
+ * Configures stateless JWT-based security for auth-service: registers the
+ * {@link JwtAuthenticationFilter} ahead of the standard login filter, opens
+ * login/register/roles/actuator endpoints, restricts user management and staff
+ * provisioning to ADMIN, and returns JSON 401/403 bodies instead of the default
+ * redirect/HTML responses.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

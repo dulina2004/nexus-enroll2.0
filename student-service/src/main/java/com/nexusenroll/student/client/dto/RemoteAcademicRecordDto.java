@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO mirroring the academic record payload returned by the Academic Record Service.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

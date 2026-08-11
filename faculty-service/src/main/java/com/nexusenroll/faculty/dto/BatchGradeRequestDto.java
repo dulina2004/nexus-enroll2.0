@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Request payload for submitting a batch of grades for a section.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

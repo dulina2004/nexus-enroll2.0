@@ -5,6 +5,9 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DTO summarizing a student's progress toward degree completion, including credits and GPA.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

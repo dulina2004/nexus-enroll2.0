@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link DegreeProgram}, adding lookup by program code.
+ */
 @Repository
 public interface DegreeProgramRepository extends JpaRepository<DegreeProgram, Long> {
 

@@ -4,6 +4,9 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+/**
+ * Payload for updating a course's capacity, consumed by the capacity-update operation.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

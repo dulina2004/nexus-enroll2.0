@@ -23,6 +23,12 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Owns each student's academic history: completed courses, grades, degree progress
+ * and cumulative GPA/credit totals. Recalculates the derived degree-progress and
+ * cumulative-record figures whenever a course or grade changes.
+ * Called by {@link com.nexusenroll.academicrecord.controller.AcademicRecordController}.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -34,6 +40,11 @@ public class AcademicRecordService {
     private final CumulativeRecordRepository cumulativeRecordRepository;
     private final FacultyServiceClient facultyServiceClient;
 
+    /**
+     * Records a completed course, then rolls the new credits into that student's
+     * {@link DegreeProgress} (recalculating {@code progressPercentage}) and
+     * {@link CumulativeRecord} (recalculating total credits and graduation status).
+     */
     @Transactional
     public CompletedCourseDto addCompletedCourse(Long studentId, CompletedCourseDto dto) {
         if (studentId == null || studentId <= 0) {
@@ -169,6 +180,10 @@ public class AcademicRecordService {
         return mapToDegreeProgressDto(dp);
     }
 
+    /**
+     * Upserts a student's degree-progress figures and recalculates
+     * {@code progressPercentage} from the updated credit totals.
+     */
     @Transactional
     public DegreeProgressDto updateDegreeProgress(DegreeProgressDto dto) {
         if (dto == null || dto.getStudentId() == null || dto.getStudentId() <= 0) {
@@ -193,6 +208,11 @@ public class AcademicRecordService {
         return mapToDegreeProgressDto(saved);
     }
 
+    /**
+     * Assembles the full academic record for a student by aggregating the
+     * cumulative GPA/credit totals, completed course history, grade history and
+     * degree progress from their respective tables into one {@link AcademicRecordDto}.
+     */
     @Transactional(readOnly = true)
     public AcademicRecordDto getAcademicRecord(Long studentId) {
         if (studentId == null || studentId <= 0) {

@@ -4,6 +4,9 @@ import lombok.*;
 
 import java.time.Instant;
 
+/**
+ * Representation of a department returned to clients.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

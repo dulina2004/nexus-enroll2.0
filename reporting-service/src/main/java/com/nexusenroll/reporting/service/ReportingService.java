@@ -20,6 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Director in the Builder pattern — drives {@link ReportBuilder} implementations through the
+ * same assembly sequence (title, semester/year, summary metrics, then data rows) for every
+ * report type, varying only which concrete builder is selected and which data feeds it.
+ * Persists each generated report as an {@link AuditReport} and maps results to response DTOs.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j

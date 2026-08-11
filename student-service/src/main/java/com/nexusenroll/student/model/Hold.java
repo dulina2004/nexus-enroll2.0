@@ -8,6 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 
+/**
+ * JPA entity representing an administrative or financial hold placed on a student.
+ */
 @Entity
 @Table(name = "holds", schema = "nexus_student")
 @Getter

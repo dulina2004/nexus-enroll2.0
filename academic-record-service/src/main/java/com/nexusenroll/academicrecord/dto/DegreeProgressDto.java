@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/** DTO for a student's degree-progress figures, used both as request payload and API response. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

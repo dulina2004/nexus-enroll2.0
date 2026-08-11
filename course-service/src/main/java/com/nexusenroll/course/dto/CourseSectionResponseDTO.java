@@ -4,6 +4,10 @@ import lombok.*;
 
 import java.time.Instant;
 
+/**
+ * Representation of a course section returned to clients, including schedule,
+ * capacity, and enrollment details.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

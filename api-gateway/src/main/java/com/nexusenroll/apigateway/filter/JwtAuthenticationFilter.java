@@ -25,6 +25,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Global gateway filter that gates every request except OPTIONS preflights and the
+ * public auth/health endpoints: it requires a valid bearer JWT, then forwards the
+ * user id and role to downstream services as {@code X-User-Id}/{@code X-User-Role}
+ * headers instead of the raw token.
+ */
 @Component
 @RequiredArgsConstructor
 @Slf4j

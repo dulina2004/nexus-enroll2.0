@@ -8,6 +8,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.Instant;
 import java.time.LocalDate;
 
+/**
+ * JPA entity representing a student's enrollment in an academic program.
+ */
 @Entity
 @Table(name = "student_programs", schema = "nexus_student")
 @Getter

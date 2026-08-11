@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring Data repository for querying persisted {@link AuditReport} audit records.
+ */
 @Repository
 public interface AuditReportRepository extends JpaRepository<AuditReport, Long> {
 

@@ -8,6 +8,10 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
+/**
+ * Registers the CORS policy for the gateway, allowing the local frontend dev
+ * origins to call any downstream route with credentials.
+ */
 @Configuration
 public class CorsConfig {
 

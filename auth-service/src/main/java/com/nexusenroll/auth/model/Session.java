@@ -6,6 +6,10 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 
+/**
+ * Records one issued JWT (as a hash) with its owner, expiry and request metadata,
+ * for session auditing and lookup by token hash.
+ */
 @Entity
 @Table(name = "sessions", schema = "nexus_auth")
 @Getter

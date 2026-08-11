@@ -11,6 +11,11 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
 
+/**
+ * REST-based {@link StudentClient} that calls the Student Service over HTTP to fetch a
+ * student's profile, falling back to a synthesized offline profile if the service is
+ * unreachable or the student is not found.
+ */
 @Component
 @Slf4j
 public class HttpStudentClient implements StudentClient {

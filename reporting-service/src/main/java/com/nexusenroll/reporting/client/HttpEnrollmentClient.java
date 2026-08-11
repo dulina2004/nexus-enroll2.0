@@ -10,6 +10,10 @@ import org.springframework.web.client.RestClient;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * {@code RestClient}-based implementation of {@link EnrollmentClient} that calls the Enrollment
+ * Service over HTTP and falls back to static sample data when the call fails.
+ */
 @Component
 @Slf4j
 public class HttpEnrollmentClient implements EnrollmentClient {

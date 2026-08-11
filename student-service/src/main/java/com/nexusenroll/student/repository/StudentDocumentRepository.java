@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring Data repository for {@link StudentDocument} records.
+ */
 @Repository
 public interface StudentDocumentRepository extends JpaRepository<StudentDocument, Long> {
     List<StudentDocument> findByStudentId(Long studentId);

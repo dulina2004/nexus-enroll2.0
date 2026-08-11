@@ -14,6 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * REST controller exposing report generation and audit history endpoints, delegating all
+ * business logic to {@link ReportingService}.
+ */
 @RestController
 @RequestMapping("/api/reports")
 @RequiredArgsConstructor

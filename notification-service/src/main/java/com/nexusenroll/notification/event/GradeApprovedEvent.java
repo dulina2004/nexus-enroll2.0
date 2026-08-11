@@ -2,6 +2,7 @@ package com.nexusenroll.notification.event;
 
 import lombok.Getter;
 
+/** Fired when a student's course grade is approved; carries the grade ID for the {@code GRADE_APPROVED} notification. */
 @Getter
 public class GradeApprovedEvent extends NotificationEvent {
 

@@ -2,6 +2,7 @@ package com.nexusenroll.notification.event;
 
 import lombok.Getter;
 
+/** Base Spring application event carrying the data needed to notify a recipient; extended by {@link EnrollmentCreatedEvent}, {@link GradeApprovedEvent}, and {@link WaitlistAddedEvent}. */
 @Getter
 public class NotificationEvent {
 

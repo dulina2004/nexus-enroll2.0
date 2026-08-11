@@ -11,6 +11,11 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
 
+/**
+ * REST-based {@link AcademicRecordClient} that calls the Academic Record Service over
+ * HTTP to fetch a student's academic record, returning an empty result if the service
+ * is unreachable or no record is found.
+ */
 @Component
 @Slf4j
 public class HttpAcademicRecordClient implements AcademicRecordClient {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/** Spring Data repository for {@link GradeRecord}, adding lookup by enrollment and by student. */
 @Repository
 public interface GradeRecordRepository extends JpaRepository<GradeRecord, Long> {
 

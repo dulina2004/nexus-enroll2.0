@@ -8,6 +8,9 @@ import lombok.NoArgsConstructor;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Response payload representing a course section's roster of enrolled students.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

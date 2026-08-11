@@ -2,6 +2,7 @@ package com.nexusenroll.notification.event;
 
 import lombok.Getter;
 
+/** Fired when a student is added to a course waitlist; carries the waitlist ID for the {@code WAITLIST_AVAILABLE} notification. */
 @Getter
 public class WaitlistAddedEvent extends NotificationEvent {
 

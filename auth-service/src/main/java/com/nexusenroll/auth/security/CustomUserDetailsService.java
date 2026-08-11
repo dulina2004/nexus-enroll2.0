@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 
+/**
+ * Loads a {@link User} by username or email and adapts it to Spring Security's
+ * {@link UserDetails}, mapping account status and lock expiry to the enabled/locked
+ * flags the authentication manager checks.
+ */
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 

@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring Data repository for {@link Grade} lookups by enrollment and by section.
+ */
 @Repository
 public interface GradeRepository extends JpaRepository<Grade, Long> {
     List<Grade> findByEnrollmentId(Long enrollmentId);

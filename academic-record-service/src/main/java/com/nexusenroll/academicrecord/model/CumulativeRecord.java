@@ -12,6 +12,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/** Entity holding one student's cumulative GPA, credit totals and graduation status. */
 @Entity
 @Table(name = "cumulative_records")
 @Getter

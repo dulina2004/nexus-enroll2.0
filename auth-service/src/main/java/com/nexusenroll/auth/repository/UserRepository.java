@@ -8,6 +8,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link User}, adding lookup and existence checks by
+ * username/email and a combined username-or-email lookup used at login.
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
 

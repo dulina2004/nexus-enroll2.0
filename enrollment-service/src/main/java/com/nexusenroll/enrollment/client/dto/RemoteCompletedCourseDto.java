@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Completed course record as returned by the Academic Record Service.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

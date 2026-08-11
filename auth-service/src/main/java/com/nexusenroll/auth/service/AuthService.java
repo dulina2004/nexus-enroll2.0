@@ -31,6 +31,10 @@ import java.util.Map;
 
 /**
  * Service for authentication, user registration, JWT session management, and account status updates.
+ * Holds the {@code Role -> UserFactory} map that drives the Factory Method pattern: registration
+ * and staff provisioning look up the matching {@link UserFactory} by role instead of branching on
+ * type. Adding a role means adding a factory and one map entry here; no existing factory or
+ * calling code needs to change (Open/Closed Principle).
  */
 @Service
 @Transactional

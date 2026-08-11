@@ -11,6 +11,12 @@ import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+/**
+ * Issues and validates the JWTs used for session authentication. Signs tokens with
+ * an HMAC key derived from {@code jwt.secret} and reads back the user id, role and
+ * expiry from a token's claims. Called by {@link com.nexusenroll.auth.service.AuthService}
+ * on login/registration and by {@link JwtAuthenticationFilter} on every request.
+ */
 @Component
 public class JwtTokenProvider {
 

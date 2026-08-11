@@ -11,6 +11,11 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Verifies JWT signatures and reads claims at the gateway, using the same HMAC
+ * secret auth-service signs with. Called by {@link com.nexusenroll.apigateway.filter.JwtAuthenticationFilter}
+ * on every non-public request.
+ */
 @Component
 @Slf4j
 public class JwtTokenValidator {

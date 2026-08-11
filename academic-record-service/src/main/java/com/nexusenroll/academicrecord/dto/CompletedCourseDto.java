@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** DTO for a single completed course, used both as request payload and API response. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

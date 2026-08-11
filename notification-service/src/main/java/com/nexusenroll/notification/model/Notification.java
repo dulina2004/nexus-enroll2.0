@@ -15,6 +15,7 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/** JPA entity representing a persisted notification delivered to a user, tracked via its read/unread state. */
 @Entity
 @Table(name = "notifications")
 @Getter

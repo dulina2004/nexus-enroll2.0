@@ -17,6 +17,11 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * REST-based {@link CourseServiceClient} that calls the Course Service over HTTP for
+ * section data and seat reservation/release, falling back to
+ * {@link DefaultCourseServiceClient} when the remote call fails.
+ */
 @Component
 @Primary
 @Slf4j

@@ -11,6 +11,11 @@ import org.springframework.web.client.RestClient;
 
 import java.util.Optional;
 
+/**
+ * REST-based {@link StudentClient} that calls the Student Service over HTTP.
+ * Swallows not-found and transport errors, returning an empty {@code Optional}
+ * instead so callers don't need to handle remote-service failures directly.
+ */
 @Component
 @Slf4j
 public class HttpStudentClient implements StudentClient {

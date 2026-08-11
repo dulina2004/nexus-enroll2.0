@@ -6,6 +6,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link AcademicStanding} records.
+ */
 @Repository
 public interface AcademicStandingRepository extends JpaRepository<AcademicStanding, Long> {
     Optional<AcademicStanding> findByStudentId(Long studentId);

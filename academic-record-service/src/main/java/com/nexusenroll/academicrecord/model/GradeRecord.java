@@ -14,6 +14,7 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/** Entity mapping one graded assignment tied to a student's course enrollment. */
 @Entity
 @Table(name = "grades")
 @Getter

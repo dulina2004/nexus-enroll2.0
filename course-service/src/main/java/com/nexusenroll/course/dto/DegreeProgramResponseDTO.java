@@ -5,6 +5,10 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Full representation of a degree program returned to clients, including its list of
+ * program requirements.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

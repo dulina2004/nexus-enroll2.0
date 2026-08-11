@@ -9,6 +9,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Response DTO representing a generated {@link com.nexusenroll.reporting.model.Report}.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

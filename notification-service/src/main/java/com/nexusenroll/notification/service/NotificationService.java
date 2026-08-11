@@ -19,6 +19,13 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Orchestrates notification requests: validates input, fills in default title/message text per
+ * event type, and publishes a {@link NotificationEvent} that
+ * {@link com.nexusenroll.notification.event.NotificationEventListener} picks up to notify the
+ * registered {@link NotificationObserver}s. Also exposes read and mark-as-read operations over
+ * persisted {@link Notification} records.
+ */
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -28,6 +35,12 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final ApplicationEventPublisher eventPublisher;
 
+    /**
+     * Validates the request, defaults the title/message when omitted, and publishes a
+     * {@link NotificationEvent} so {@link com.nexusenroll.notification.event.NotificationEventListener}
+     * notifies the registered observers. The {@link NotificationSubject} returned here is a
+     * separate instance built for the caller's immediate use; it is never notified directly.
+     */
     @Transactional
     public NotificationSubject send(NotificationRequestDto request) {
         validate(request);

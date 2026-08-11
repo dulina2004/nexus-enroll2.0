@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/** Spring Data repository providing lookup of {@link EmailLog} records by recipient user. */
 @Repository
 public interface EmailLogRepository extends JpaRepository<EmailLog, Long> {
 

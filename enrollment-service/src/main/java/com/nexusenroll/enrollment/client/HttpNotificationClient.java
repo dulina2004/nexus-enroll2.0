@@ -14,6 +14,11 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+/**
+ * REST-based {@link NotificationClient} that dispatches enrollment and waitlist events
+ * to the Notification Service over HTTP, logging (and swallowing) delivery failures so
+ * they never block the enrollment flow.
+ */
 @Component
 @Primary
 @Slf4j

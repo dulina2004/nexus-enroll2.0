@@ -2,6 +2,10 @@ package com.nexusenroll.course.dto;
 
 import lombok.*;
 
+/**
+ * Carries the search/filter criteria (keyword, department, course number, instructor,
+ * semester, year) used for dynamic course search.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

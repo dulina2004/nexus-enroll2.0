@@ -15,6 +15,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * JPA entity persisting a generated {@link Report} as a queryable audit record.
+ */
 @Entity
 @Table(name = "audit_reports")
 @Getter

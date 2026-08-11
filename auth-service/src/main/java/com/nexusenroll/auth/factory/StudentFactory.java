@@ -7,6 +7,10 @@ import com.nexusenroll.auth.model.User;
 import com.nexusenroll.common.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
+/**
+ * Concrete Creator in the Factory Method pattern. Builds a {@link StudentUser}
+ * with the STUDENT role and the fields common to every user type.
+ */
 @Component
 public class StudentFactory extends UserFactory {
 

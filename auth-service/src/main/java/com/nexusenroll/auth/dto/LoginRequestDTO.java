@@ -3,6 +3,9 @@ package com.nexusenroll.auth.dto;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+/**
+ * Login request: a username-or-email identifier plus password.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

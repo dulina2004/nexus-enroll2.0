@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/** DTO mirroring the student payload returned by the Student Service's API. */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

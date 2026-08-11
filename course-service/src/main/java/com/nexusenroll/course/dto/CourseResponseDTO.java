@@ -5,6 +5,10 @@ import lombok.*;
 import java.time.Instant;
 import java.util.List;
 
+/**
+ * Full representation of a course returned to clients, including denormalized
+ * department info and resolved prerequisite/co-requisite details.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

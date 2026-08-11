@@ -7,6 +7,10 @@ import org.springframework.web.client.RestClient;
 
 import java.time.Duration;
 
+/**
+ * Configures the shared {@link RestClient.Builder} bean used to call downstream
+ * services, with fixed connect/read timeouts.
+ */
 @Configuration
 public class RestClientConfig {
 

@@ -19,6 +19,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Backs the {@code /api/records} endpoints for completed courses, grades,
+ * degree progress and the aggregated academic record.
+ * Delegates all business logic to {@link AcademicRecordService}.
+ */
 @RestController
 @RequestMapping("/api/records")
 @RequiredArgsConstructor

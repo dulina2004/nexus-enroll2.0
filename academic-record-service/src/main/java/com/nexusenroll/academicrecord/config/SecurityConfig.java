@@ -8,6 +8,10 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+/**
+ * Spring Security configuration for this service. Disables CSRF and session
+ * creation (stateless API) and currently permits all requests.
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {

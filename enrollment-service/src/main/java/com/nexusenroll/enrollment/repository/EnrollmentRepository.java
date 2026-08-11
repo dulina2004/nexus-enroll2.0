@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Spring Data repository for {@link Enrollment} records.
+ */
 @Repository
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
 

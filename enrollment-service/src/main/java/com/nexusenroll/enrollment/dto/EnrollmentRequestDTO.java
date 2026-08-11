@@ -3,6 +3,9 @@ package com.nexusenroll.enrollment.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 
+/**
+ * Request payload for a student enrolling into a course section.
+ */
 public class EnrollmentRequestDTO {
 
     @NotNull(message = "Student ID is required")

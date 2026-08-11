@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * {@code RestClient}-based implementation of {@link CourseClient} that calls the Course Service
+ * over HTTP and falls back to static sample data when the call fails.
+ */
 @Component
 @Slf4j
 public class HttpCourseClient implements CourseClient {

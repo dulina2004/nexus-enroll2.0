@@ -10,6 +10,10 @@ import org.springframework.web.client.RestClient;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * {@code RestClient}-based implementation of {@link FacultyClient} that calls the Faculty
+ * Service over HTTP and falls back to static sample data when the call fails.
+ */
 @Component
 @Slf4j
 public class HttpFacultyClient implements FacultyClient {

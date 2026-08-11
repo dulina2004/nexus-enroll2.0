@@ -6,6 +6,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+/**
+ * Spring Data repository for {@link CourseChangeRequest}, adding lookups by status and
+ * all requests ordered by creation date (most recent first).
+ */
 @Repository
 public interface CourseChangeRequestRepository extends JpaRepository<CourseChangeRequest, Long> {
 

@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * Course section data as returned by the Course Service.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

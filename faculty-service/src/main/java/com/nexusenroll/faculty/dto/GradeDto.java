@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Request/response payload representing a single grade and its current status.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

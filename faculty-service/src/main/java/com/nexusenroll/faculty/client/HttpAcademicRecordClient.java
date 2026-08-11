@@ -10,6 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
+/**
+ * HTTP implementation of {@link AcademicRecordClient} that posts an approved grade
+ * to the Academic Record Service via {@link RestClient}.
+ */
 @Component
 @Slf4j
 public class HttpAcademicRecordClient implements AcademicRecordClient {
@@ -21,6 +25,11 @@ public class HttpAcademicRecordClient implements AcademicRecordClient {
         this.restClient = restClientBuilder.baseUrl(recordServiceUrl).build();
     }
 
+    /**
+     * Posts the grade to the Academic Record Service. Any failure (including the
+     * service being unreachable) is logged and swallowed rather than propagated,
+     * so a downed Academic Record Service never fails grade approval.
+     */
     @Override
     public void recordGrade(GradeContext grade) {
         if (grade == null) {

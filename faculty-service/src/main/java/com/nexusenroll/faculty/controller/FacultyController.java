@@ -25,6 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * REST endpoints for faculty profile lookup, class rosters, and the grade
+ * lifecycle (draft, submit, approve, reject, batch submit, retrieval),
+ * delegating to {@link FacultyService} and {@link GradeService}.
+ */
 @RestController
 @RequestMapping("/api/faculty")
 @RequiredArgsConstructor

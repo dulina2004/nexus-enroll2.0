@@ -5,6 +5,10 @@ import com.nexusenroll.enrollment.model.CourseSectionSnapshot;
 
 import java.util.List;
 
+/**
+ * Abstraction over the remote Course Service, providing course section data and
+ * seat reservation/release operations used during enrollment and waitlist processing.
+ */
 public interface CourseServiceClient {
 
     CourseSectionSnapshot getSectionSnapshot(long sectionId) throws ServiceException;

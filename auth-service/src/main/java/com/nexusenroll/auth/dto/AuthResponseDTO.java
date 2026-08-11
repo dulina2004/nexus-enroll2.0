@@ -3,6 +3,9 @@ package com.nexusenroll.auth.dto;
 import com.nexusenroll.auth.model.User;
 import lombok.*;
 
+/**
+ * Response returned after successful login or registration: user profile fields plus the issued JWT.
+ */
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

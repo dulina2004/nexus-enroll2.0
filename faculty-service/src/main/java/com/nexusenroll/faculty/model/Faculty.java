@@ -14,6 +14,9 @@ import lombok.Setter;
 
 import java.time.LocalDate;
 
+/**
+ * JPA entity for a faculty member's profile — title, department, office and employment details.
+ */
 @Entity
 @Table(name = "faculty")
 @Getter
