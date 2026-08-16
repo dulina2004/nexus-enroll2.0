@@ -19,9 +19,13 @@ Maven — there is no separate "build the jars first" step anymore. `docker comp
 (or `up --build`) is the only build step you need, for backend and frontend alike.
 
 ```powershell
-# Always start from a clean database - see "Why down -v" below.
+# 1. Start from a clean database and launch all services
 docker compose down -v
 docker compose up --build -d
+
+# 2. Load the rich demo seed data into MySQL
+powershell -ExecutionPolicy Bypass -File .\seed-docker.ps1
+# (Or: npm run seed:docker)
 ```
 
 First build downloads the Maven dependency cache and can take several minutes; a

@@ -1,17 +1,19 @@
 {
   "name": "nexusenroll-microservices",
   "version": "2.0.0",
-  "description": "NexusEnroll Microservices Architecture - Automated API Test Runner",
+  "description": "NexusEnroll Microservices Architecture - Automated API Test Runner & Seed Utility",
   "main": "run-api-tests.js",
   "scripts": {
     "test": "node run-api-tests.js",
-    "test:api": "node run-api-tests.js"
+    "test:api": "node run-api-tests.js",
+    "seed:docker": "powershell -ExecutionPolicy Bypass -File ./seed-docker.ps1"
   },
   "keywords": [
     "nexusenroll",
     "microservices",
     "api",
-    "testing"
+    "testing",
+    "seed"
   ],
   "author": "",
   "license": "ISC"
