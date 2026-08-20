@@ -104,3 +104,9 @@ mvn test -pl api-gateway
 
 All seeded demo accounts share the password **`Password123`**. See [DOCKER.md](DOCKER.md) for
 the full list, the one-command startup flow, and troubleshooting.
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](LICENSE).
